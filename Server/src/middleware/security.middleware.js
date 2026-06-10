@@ -5,7 +5,6 @@ import hpp from "hpp";
 import compression from "compression";
 import express from "express";
 import rateLimit from "express-rate-limit";
-import env from "../config/env.js";
 
 const securityMiddleware = (app) => {
   app.use(helmet());
