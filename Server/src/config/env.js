@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import z from "zod";
-import logger from "./logger.js";
+import { z } from "zod";
 import appConstant from "../constant/app.constant.js";
 
 const envSchema = z.object({
@@ -21,7 +20,7 @@ const envSchema = z.object({
 const env = envSchema.safeParse(process.env);
 
 if (!env.success) {
-  logger.error({ errors: env.error.issues }, "Environment validation failed");
+  console.error("Environment validation failed");
   process.exit(1);
 }
 
