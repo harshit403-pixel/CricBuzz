@@ -15,6 +15,10 @@ const envSchema = z.object({
   RATELIMIT_MAX_REQUESTS: z.coerce
     .number()
     .default(appConstant.RATELIMIT_MAX_REQUESTS),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GOOGLE_CALLBACK_URL: z.string(),
+  JWT_SECRET: z.string(),
 });
 
 const env = envSchema.safeParse(process.env);
