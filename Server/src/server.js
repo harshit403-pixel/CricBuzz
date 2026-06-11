@@ -1,7 +1,7 @@
 import createApp from "./app.js";
+import { connectDB } from "./config/db.js";
 import env from "./config/env.js";
 import logger from "./config/logger.js";
-import { connectDB } from "./database/db.js";
 
 const app = createApp();
 
