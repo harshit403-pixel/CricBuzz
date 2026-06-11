@@ -1,6 +1,6 @@
 import helmet from "helmet";
 import cors from "cors";
-import env from "../config/env.js";
+import env from "../../config/env.js";
 import hpp from "hpp";
 import compression from "compression";
 import express from "express";

@@ -1,4 +1,5 @@
-import logger from "../config/logger.js";
+import { StatusCodes } from "http-status-codes";
+import logger from "../../config/logger.js";
 
 export const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
@@ -9,11 +10,11 @@ export const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
 
   if (!statusCode) {
-    statusCode = 500;
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     message = "Internal Server Error";
   }
 
-  if (statusCode >= 500) {
+  if (statusCode >= StatusCodes.INTERNAL_SERVER_ERROR) {
     logger.error(
       { err, path: req.originalUrl, method: req.method },
       "Server error caught by global handler",
