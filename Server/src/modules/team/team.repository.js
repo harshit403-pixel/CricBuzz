@@ -2,11 +2,16 @@
  * Team Repository
  *
  * Handles direct database operations for the Team module.
- * This layer should only interact with the Team model and MongoDB.
  *
- * Business rules such as duplicate checks and not-found handling
+ * Repository responsibilities:
+ * - Query the Team collection.
+ * - Apply reusable database filters.
+ * - Keep MongoDB/Mongoose logic separate from business logic.
+ *
+ * Business rules such as duplicate validation and not-found handling
  * should stay inside the service layer.
  */
+
 import Team from "./team.model.js";
 
 class TeamRepository {
@@ -15,28 +20,46 @@ class TeamRepository {
   }
 
   async findAll() {
-    return Team.find({}).sort({ createdAt: -1 });
+    return Team.find({ isDeleted: false }).sort({ createdAt: -1 });
   }
 
   async findById(id) {
-    return Team.findById(id);
+    return Team.findOne({ _id: id, isDeleted: false });
   }
 
   async findByNameOrShortName(name, shortName) {
-    return Team.findOne({
-      $or: [{ name }, { shortName }],
-    });
-  }
+  return Team.findOne({
+    $or: [{ name }, { shortName }],
+  });
+}
+
+async findDuplicateForUpdate(id, name, shortName) {
+  return Team.findOne({
+    _id: { $ne: id },
+    $or: [{ name }, { shortName }],
+  });
+}
 
   async updateById(id, data) {
-    return Team.findByIdAndUpdate(id, data, {
-      new: true,
-      runValidators: true,
-    });
+    return Team.findOneAndUpdate(
+      { _id: id, isDeleted: false },
+      data,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
   }
 
   async deleteById(id) {
-    return Team.findByIdAndDelete(id);
+    return Team.findOneAndUpdate(
+      { _id: id, isDeleted: false },
+      { isDeleted: true },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
   }
 }
 

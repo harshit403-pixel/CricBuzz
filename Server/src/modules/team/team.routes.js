@@ -1,13 +1,16 @@
 /**
- * Team Controller
+ * Team Routes
  *
- * Handles HTTP request/response flow for Team APIs.
- * This layer should stay thin and only coordinate between
- * Express routes and the Team service layer.
+ * Defines Team API endpoints and attaches validation middleware.
  *
- * Business rules, database queries, and validation logic should
- * remain outside the controller to keep the module maintainable.
+ * Route responsibilities:
+ * - Define endpoint paths and HTTP methods.
+ * - Attach request validation middleware.
+ * - Forward valid requests to the controller layer.
+ *
+ * Base path after registration: /api/teams
  */
+
 import { Router } from "express";
 import teamController from "./team.controller.js";
 import {

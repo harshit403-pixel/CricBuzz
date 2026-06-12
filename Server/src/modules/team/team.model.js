@@ -2,10 +2,16 @@
  * Team Model
  *
  * Defines the MongoDB schema for cricket teams.
- * The Team entity is used across matches, players, squads,
- * playing XI selection, scorecards, and points table features.
  *
- * This file should only contain schema-level rules and model export.
+ * This schema follows the shared Cricbuzz Models document and keeps
+ * Team as a reusable entity for matches, squads, playing XI, scores,
+ * and points table features.
+ *
+ * Schema responsibilities:
+ * - Define Team fields and data types.
+ * - Define MongoDB references.
+ * - Define default values.
+ * - Keep soft-delete and audit fields available for admin operations.
  */
 
 import mongoose from "mongoose";
@@ -18,36 +24,58 @@ const teamSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+
     shortName: {
       type: String,
       required: true,
       trim: true,
-      uppercase: true,
       unique: true,
     },
-    country: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+
     logo: {
       type: String,
-      trim: true,
-      default: "",
+      required: true,
     },
-    description: {
+
+    primaryColor: {
       type: String,
-      trim: true,
-      default: "",
     },
-    isActive: {
+
+    squadPlayers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Player",
+      },
+    ],
+
+    /**
+     * Soft delete flag.
+     *
+     * Records are not removed permanently from the database.
+     * Instead, APIs should ignore records where isDeleted is true.
+     */
+    isDeleted: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+
+    /**
+     * Audit fields.
+     *
+     * These will be useful once authentication/RBAC is connected.
+     * For now, they stay optional because Team APIs are not yet using auth.
+     */
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
 const Team = mongoose.model("Team", teamSchema);

@@ -2,84 +2,69 @@
  * Team Controller
  *
  * Handles HTTP request/response flow for Team APIs.
- * This layer should stay thin and only coordinate between
- * Express routes and the Team service layer.
  *
- * Business rules, database queries, and validation logic should
- * remain outside the controller to keep the module maintainable.
+ * Controller responsibilities:
+ * - Read request data from params/body.
+ * - Call the Team service layer.
+ * - Send standardized API responses.
+ *
+ * Business logic, database queries, and validation rules should stay
+ * outside controllers to keep this layer thin and maintainable.
  */
+
 import { StatusCodes } from "http-status-codes";
+import asyncHandler from "../../shared/utils/asyncHandler.js";
 import teamService from "./team.service.js";
 
 class TeamController {
-  createTeam = async (req, res, next) => {
-    try {
-      const team = await teamService.createTeam(req.body);
+  createTeam = asyncHandler(async (req, res) => {
+    const team = await teamService.createTeam(req.body);
 
-      res.status(StatusCodes.CREATED).json({
-        success: true,
-        message: "Team created successfully",
-        data: team,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      message: "Team created successfully",
+      data: team,
+    });
+  });
 
-  getAllTeams = async (_req, res, next) => {
-    try {
-      const teams = await teamService.getAllTeams();
+  getAllTeams = asyncHandler(async (_req, res) => {
+    const teams = await teamService.getAllTeams();
 
-      res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Teams fetched successfully",
-        data: teams,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Teams fetched successfully",
+      data: teams,
+    });
+  });
 
-  getTeamById = async (req, res, next) => {
-    try {
-      const team = await teamService.getTeamById(req.params.id);
+  getTeamById = asyncHandler(async (req, res) => {
+    const team = await teamService.getTeamById(req.params.id);
 
-      res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Team fetched successfully",
-        data: team,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Team fetched successfully",
+      data: team,
+    });
+  });
 
-  updateTeam = async (req, res, next) => {
-    try {
-      const team = await teamService.updateTeam(req.params.id, req.body);
+  updateTeam = asyncHandler(async (req, res) => {
+    const team = await teamService.updateTeam(req.params.id, req.body);
 
-      res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Team updated successfully",
-        data: team,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Team updated successfully",
+      data: team,
+    });
+  });
 
-  deleteTeam = async (req, res, next) => {
-    try {
-      await teamService.deleteTeam(req.params.id);
+  deleteTeam = asyncHandler(async (req, res) => {
+    await teamService.deleteTeam(req.params.id);
 
-      res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Team deleted successfully",
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Team deleted successfully",
+    });
+  });
 }
 
 export default new TeamController();

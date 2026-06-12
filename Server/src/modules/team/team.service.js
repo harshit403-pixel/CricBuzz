@@ -2,12 +2,17 @@
  * Team Service
  *
  * Contains business logic for the Team module.
- * This layer coordinates validation decisions, duplicate checks,
- * not-found handling, and repository calls.
+ *
+ * Service responsibilities:
+ * - Validate route parameters.
+ * - Handle duplicate team checks.
+ * - Handle not-found cases.
+ * - Coordinate repository calls.
  *
  * Controllers should call this service instead of accessing
  * repositories or models directly.
  */
+
 import mongoose from "mongoose";
 import BadRequest from "../../shared/error/badRequest.error.js";
 import NotFound from "../../shared/error/notFound.error.js";
@@ -52,13 +57,25 @@ class TeamService {
   async updateTeam(id, data) {
     this.validateObjectId(id);
 
-    const team = await teamRepository.updateById(id, data);
+    const existingTeam = await teamRepository.findById(id);
 
-    if (!team) {
+    if (!existingTeam) {
       throw new NotFound("Team not found");
     }
 
-    return team;
+    if (data.name || data.shortName) {
+      const duplicateTeam = await teamRepository.findDuplicateForUpdate(
+        id,
+        data.name || existingTeam.name,
+        data.shortName || existingTeam.shortName,
+      );
+
+      if (duplicateTeam) {
+        throw new BadRequest("Team with this name or short name already exists");
+      }
+    }
+
+    return teamRepository.updateById(id, data);
   }
 
   async deleteTeam(id) {
