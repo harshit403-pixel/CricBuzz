@@ -7,10 +7,27 @@ import env from "../../config/env.js";
 class AuthController {
   constructor() {
     this.register = asyncHandler(this.register.bind(this));
+    this.login = asyncHandler(this.login.bind(this));
     this.googleCallback = asyncHandler(this.googleCallback.bind(this));
   }
+
   async register(req, res) {
     const data = await authService.register(req.validated.body);
+
+    res.cookie(
+      "accessToken",
+      data.accessToken,
+      setCookieOptions(env.ACCESS_TOKEN_EXPIRY),
+    );
+
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      data,
+    });
+  }
+
+  async login(req, res) {
+    const data = await authService.login(req.validated.body);
 
     res.cookie(
       "accessToken",

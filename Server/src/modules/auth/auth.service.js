@@ -2,6 +2,8 @@ import userRepository from "../users/user.repository.js";
 import BadRequestError from "../../shared/error/badRequest.error.js";
 import bcrypt from "bcryptjs";
 import { signToken } from "./utils/token.util.js";
+import unAuthorizedError from "../../shared/error/unAuthorized.error.js";
+import env from "../../config/env.js";
 
 class AuthService {
   // user register manually
@@ -23,7 +25,36 @@ class AuthService {
         email: user.email,
         role: user.role,
       },
-      "1h",
+      env.ACCESS_TOKEN_EXPIRY,
+    );
+
+    return {
+      accessToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    };
+  }
+
+  // user login manually
+  async login(dto) {
+    const user = await userRepository.findByEmail(dto.email);
+    if (!user) {
+      throw new unAuthorizedError("Invalid credentials");
+    }
+
+    // match hashed password with user's provided password
+    const matchedPassword = await bcrypt.compare(dto.password, user.password);
+    if (!matchedPassword) {
+      throw new unAuthorizedError("Invalid credentials");
+    }
+
+    const accessToken = signToken(
+      { id: user._id, email: user.email, role: user.role },
+      env.ACCESS_TOKEN_EXPIRY,
     );
 
     return {
@@ -66,7 +97,7 @@ class AuthService {
         email: user.email,
         role: user.role,
       },
-      "1h",
+      env.ACCESS_TOKEN_EXPIRY,
     );
 
     return {

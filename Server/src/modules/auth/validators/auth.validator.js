@@ -9,3 +9,10 @@ export const registerSchema = z.object({
     role: z.enum(Roles).optional(),
   }),
 });
+
+export const loginSchema = z.object({
+  body: z.object({
+    email: z.string().trim().lowercase().pipe(z.email()),
+    password: z.string().min(1),
+  }),
+});

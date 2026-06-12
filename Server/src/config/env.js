@@ -19,7 +19,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   GOOGLE_CALLBACK_URL: z.string(),
   JWT_SECRET: z.string(),
-  ACCESS_TOKEN_EXPIRY: z.coerce.number(),
+  ACCESS_TOKEN_EXPIRY: z.string(),
   CLIENT_URL: z.string(),
 });
 
