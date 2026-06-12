@@ -5,9 +5,12 @@ import hpp from "hpp";
 import compression from "compression";
 import express from "express";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 
 const securityMiddleware = (app) => {
   app.use(helmet());
+
+  app.use(cookieParser());
 
   app.use(
     cors({
