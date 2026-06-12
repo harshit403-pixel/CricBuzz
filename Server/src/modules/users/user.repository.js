@@ -6,8 +6,11 @@ class UserRepository {
   }
 
   async findById(id) {
-    return await userModel.findById(id).select("-password");
-  }
+  return await userModel.findOne({
+    _id: id,
+    isDeleted: false,
+  }).select("-password");
+}
 
   async findByEmail(email) {
     return await userModel.findOne({ email, isDeleted: false });
