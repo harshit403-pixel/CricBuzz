@@ -29,5 +29,7 @@ export const errorHandler = (err, req, res, next) => {
   res.status(statusCode).json({
     success: false,
     message,
+    // Add validation issues to response if present
+    ...(err.errors && { errors: err.errors }),
   });
 };

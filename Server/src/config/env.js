@@ -15,12 +15,21 @@ const envSchema = z.object({
   RATELIMIT_MAX_REQUESTS: z.coerce
     .number()
     .default(appConstant.RATELIMIT_MAX_REQUESTS),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GOOGLE_CALLBACK_URL: z.string(),
+  JWT_SECRET: z.string(),
+  ACCESS_TOKEN_EXPIRY: z.string(),
+  CLIENT_URL: z.string(),
 });
 
 const env = envSchema.safeParse(process.env);
 
 if (!env.success) {
-  console.error("Environment validation failed");
+  console.error(
+    "Environment validation failed",
+    JSON.stringify(env.error.issues, null, 2),
+  );
   process.exit(1);
 }
 

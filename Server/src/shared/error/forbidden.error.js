@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "./app.error.js";
 
-export default class Forbidden extends AppError {
-  constructor(message = "Forbidden") {
-    super(StatusCodes.FORBIDDEN, message);
+export default class ForbiddenError extends AppError {
+  constructor(message = "Forbidden", errors = null) {
+    super(StatusCodes.FORBIDDEN, message, errors);
   }
 }
