@@ -19,12 +19,17 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   GOOGLE_CALLBACK_URL: z.string(),
   JWT_SECRET: z.string(),
+  ACCESS_TOKEN_EXPIRY: z.coerce.number(),
+  CLIENT_URL: z.string(),
 });
 
 const env = envSchema.safeParse(process.env);
 
 if (!env.success) {
-  console.error("Environment validation failed");
+  console.error(
+    "Environment validation failed",
+    JSON.stringify(env.error.issues, null, 2),
+  );
   process.exit(1);
 }
 
