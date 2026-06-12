@@ -3,6 +3,7 @@ import validateRequest from "../../shared/middleware/validateRequest.middleware.
 import { loginSchema, registerSchema } from "./validators/auth.validator.js";
 import authController from "./auth.controller.js";
 import passport from "passport";
+import { authenticate } from "../../shared/middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -38,5 +39,8 @@ router.get(
     prompt: "select_account",
   }),
 );
+
+// logout route
+router.post("/logout", authenticate, authController.logout);
 
 export default router;

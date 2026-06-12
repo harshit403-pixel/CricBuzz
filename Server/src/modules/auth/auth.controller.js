@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "../../shared/utils/asyncHandler.js";
 import authService from "./auth.service.js";
-import { setCookieOptions } from "./utils/cookie.util.js";
+import { clearCookieOptions, setCookieOptions } from "./utils/cookie.util.js";
 import env from "../../config/env.js";
 
 class AuthController {
@@ -9,6 +9,7 @@ class AuthController {
     this.register = asyncHandler(this.register.bind(this));
     this.login = asyncHandler(this.login.bind(this));
     this.googleCallback = asyncHandler(this.googleCallback.bind(this));
+    this.logout = asyncHandler(this.logout.bind(this));
   }
 
   async register(req, res) {
@@ -51,6 +52,15 @@ class AuthController {
     );
 
     res.redirect(env.CLIENT_URL);
+  }
+
+  async logout(req, res) {
+    res.clearCookie("accessToken", clearCookieOptions());
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Logged out successfully",
+    });
   }
 }
 

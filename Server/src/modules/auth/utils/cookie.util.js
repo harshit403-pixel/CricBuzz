@@ -7,3 +7,9 @@ export const setCookieOptions = (maxAge) => ({
   sameSite: "strict",
   maxAge: ms(maxAge),
 });
+
+export const clearCookieOptions = () => ({
+  httpOnly: true,
+  secure: env.NODE_ENV === "production",
+  sameSite: "strict",
+});
