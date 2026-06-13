@@ -54,7 +54,7 @@ class SeriesController {
   });
 
   deleteSeries = asyncHandler(async (req, res) => {
-    await seriesService.deleteSeries(req.params.id);
+    await seriesService.deleteSeries(req.params.id, req.user);
 
     res.status(StatusCodes.OK).json({
       success: true,

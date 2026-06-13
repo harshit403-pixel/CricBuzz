@@ -21,18 +21,18 @@ class SeriesRepository {
     return Series.findOne({ _id: id, isDeleted: false });
   }
 
-  async findByNameOrSeason(name, season) {
+  async findByNameOrShortNameOrSeason(name, shortName, season) {
     return Series.findOne({
       isDeleted: false,
-      $or: [{ name }, { season }],
+      $or: [{ name }, { shortName }, { season }],
     });
   }
 
-  async findDuplicateForUpdate(id, name, season) {
+  async findDuplicateForUpdate(id, name, shortName, season) {
     return Series.findOne({
       _id: { $ne: id },
       isDeleted: false,
-      $or: [{ name }, { season }],
+      $or: [{ name }, { shortName }, { season }],
     });
   }
 
@@ -70,10 +70,10 @@ class SeriesRepository {
     );
   }
 
-  async deleteById(id) {
+  async deleteById(id, userId) {
     return Series.findOneAndUpdate(
       { _id: id, isDeleted: false },
-      { isDeleted: true },
+      { isDeleted: true, updatedBy: userId },
       {
         new: true,
         runValidators: true,

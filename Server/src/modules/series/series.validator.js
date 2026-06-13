@@ -21,7 +21,7 @@ const createSeriesSchema = z.object({
 
   status: seriesStatusSchema.optional(),
 
-  logo: z.string().trim().optional(),
+  logo: z.string().trim().url("Logo must be a valid URL").optional(),
 });
 
 const updateSeriesSchema = createSeriesSchema.partial();

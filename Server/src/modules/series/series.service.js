@@ -23,13 +23,17 @@ class SeriesService {
   }
 
   async createSeries(data, user) {
-    const existingSeries = await seriesRepository.findByNameOrSeason(
+    const existingSeries =
+      await seriesRepository.findByNameOrShortNameOrSeason(
       data.name,
+      data.shortName,
       data.season,
     );
 
     if (existingSeries) {
-      throw new BadRequest("Series with this name or season already exists");
+      throw new BadRequest(
+        "Series with this name, short name, or season already exists",
+      );
     }
 
     return seriesRepository.create({
@@ -63,15 +67,18 @@ class SeriesService {
       throw new NotFound("Series not found");
     }
 
-    if (data.name || data.season) {
+    if (data.name || data.shortName || data.season) {
       const duplicateSeries = await seriesRepository.findDuplicateForUpdate(
         id,
         data.name || existingSeries.name,
+        data.shortName || existingSeries.shortName,
         data.season || existingSeries.season,
       );
 
       if (duplicateSeries) {
-        throw new BadRequest("Series with this name or season already exists");
+        throw new BadRequest(
+          "Series with this name, short name, or season already exists",
+        );
       }
     }
 
@@ -81,7 +88,7 @@ class SeriesService {
     });
   }
 
-  async deleteSeries(id) {
+  async deleteSeries(id, user) {
     this.validateObjectId(id);
 
     const hasMatches = await seriesRepository.hasActiveMatches(id);
@@ -90,7 +97,7 @@ class SeriesService {
       throw new BadRequest("Series cannot be deleted because matches exist");
     }
 
-    const series = await seriesRepository.deleteById(id);
+    const series = await seriesRepository.deleteById(id, user?.id);
 
     if (!series) {
       throw new NotFound("Series not found");
