@@ -8,6 +8,7 @@ import { errorHandler } from "./shared/middleware/errorHandler.middleware.js";
 import handleGoogleAuth from "./modules/auth/strategies/google.strategy.js";
 import authRouter from "./modules/auth/auth.route.js";
 import userRouter from "./modules/users/user.route.js";
+import playerRoutes from "./modules/player/player.route.js";
 
 const createApp = () => {
   const app = express();
@@ -33,6 +34,7 @@ const createApp = () => {
   app.use("/api/teams", teamRoutes);
   app.use("/api/auth", authRouter);
   app.use("/api/users", userRouter);
+  app.use("/api/players", playerRoutes);
 
   app.use(errorHandler);
 
