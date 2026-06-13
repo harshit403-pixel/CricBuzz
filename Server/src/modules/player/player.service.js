@@ -1,17 +1,9 @@
-import mongoose from "mongoose";
-
 import BadRequest from "../../shared/error/badRequest.error.js";
 import NotFound from "../../shared/error/notFound.error.js";
 
 import playerRepository from "./player.repository.js";
 
 class PlayerService {
-  validateObjectId(id) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new BadRequest("Invalid player id");
-    }
-  }
-
   async createPlayer(data) {
     const existingPlayer =
       await playerRepository.findByNameAndCountry(
@@ -33,8 +25,6 @@ class PlayerService {
   }
 
   async getPlayerById(id) {
-    this.validateObjectId(id);
-
     const player = await playerRepository.findById(id);
 
     if (!player) {
@@ -45,13 +35,18 @@ class PlayerService {
   }
 
   async updatePlayer(id, data) {
-    this.validateObjectId(id);
+    const existingPlayer =
+      await playerRepository.findById(id);
+
+    if (!existingPlayer) {
+      throw new NotFound("Player not found");
+    }
 
     const duplicatePlayer =
       await playerRepository.findDuplicateForUpdate(
         id,
-        data.name,
-        data.country,
+        data.name || existingPlayer.name,
+        data.country || existingPlayer.country,
       );
 
     if (duplicatePlayer) {
@@ -60,21 +55,13 @@ class PlayerService {
       );
     }
 
-    const player = await playerRepository.updateById(
+    return await playerRepository.updateById(
       id,
       data,
     );
-
-    if (!player) {
-      throw new NotFound("Player not found");
-    }
-
-    return player;
   }
 
   async deletePlayer(id, updatedBy) {
-    this.validateObjectId(id);
-
     const player =
       await playerRepository.deleteById(
         id,
