@@ -1,10 +1,14 @@
 import { Router } from "express";
 
 import playerController from "./player.controller.js";
+
+import validateRequest from "../../shared/middleware/validateRequest.middleware.js";
+ 
 import {
-  validateCreatePlayer,
-  validateUpdatePlayer,
-} from "./player.validator.js";
+  createPlayerSchema,
+  updatePlayerSchema,
+  playerIdSchema,
+} from "./validators/player.validator.js";
 
 const router = Router();
 
@@ -12,17 +16,24 @@ router
   .route("/")
   .get(playerController.getAllPlayers)
   .post(
-    validateCreatePlayer,
+    validateRequest(createPlayerSchema),
     playerController.createPlayer,
   );
 
 router
   .route("/:id")
-  .get(playerController.getPlayerById)
+  .get(
+    validateRequest(playerIdSchema),
+    playerController.getPlayerById,
+  )
   .patch(
-    validateUpdatePlayer,
+    validateRequest(playerIdSchema),
+    validateRequest(updatePlayerSchema),
     playerController.updatePlayer,
   )
-  .delete(playerController.deletePlayer);
+  .delete(
+    validateRequest(playerIdSchema),
+    playerController.deletePlayer,
+  );
 
 export default router;

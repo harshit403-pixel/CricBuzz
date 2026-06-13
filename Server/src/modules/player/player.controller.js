@@ -5,7 +5,7 @@ import playerService from "./player.service.js";
 
 class PlayerController {
   createPlayer = asyncHandler(async (req, res) => {
-    const player = await playerService.createPlayer(req.body);
+    const player = await playerService.createPlayer(req.validated.body);
 
     res.status(StatusCodes.CREATED).json({
       success: true,
@@ -37,7 +37,7 @@ class PlayerController {
   updatePlayer = asyncHandler(async (req, res) => {
     const player = await playerService.updatePlayer(
       req.params.id,
-      req.body,
+      req.validated.body,
     );
 
     res.status(StatusCodes.OK).json({
