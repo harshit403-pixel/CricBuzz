@@ -23,7 +23,10 @@ export const teamBodySchema = z.object({
     .trim()
     .min(2, "Short name must be at least 2 characters"),
 
-  logo: z.string().trim().min(1, "Logo is required"),
+  logo: z
+  .string()
+  .trim()
+  .url("Logo must be a valid URL"),
 
   primaryColor: z.string().trim().optional(),
 

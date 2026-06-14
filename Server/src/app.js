@@ -24,7 +24,7 @@ const createApp = () => {
     app.use(morgan("dev"));
   }
 
-  securityMiddleware(app);
+  securityMiddleware(app); 
 
   // initializes passport + google strategy
   handleGoogleAuth(app);
