@@ -16,6 +16,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
 
 import { ROLES } from "../shared/constants/roles.js";
+import CreateTeam from "../pages/private/CreateTeam.jsx";
+import TeamsList from "../pages/private/TeamLIst.jsx";
+import EditTeam from "../pages/private/EditTeam.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +76,18 @@ const router = createBrowserRouter([
         path: "series/:id/edit",
         element: <EditSeries />,
       },
+      {
+  path: "teams",
+  element: <TeamsList/>,
+},
+      {
+  path: "teams/create",
+  element: <CreateTeam/>,
+},
+{
+  path: "teams/:id/edit",
+  element: <EditTeam />,
+}
     ],
   },
 ]);
