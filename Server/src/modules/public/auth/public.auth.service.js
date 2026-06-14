@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { signToken } from "./utils/token.util.js";
 import unAuthorizedError from "../../../shared/error/unAuthorized.error.js";
 import env from "../../../config/env.js";
+import UnAuthorizedError from "../../../shared/error/unAuthorized.error.js";
+import jwt from "jsonwebtoken";
 
 class PublicAuthService {
   // user register manually
@@ -139,6 +141,50 @@ class PublicAuthService {
         role: user.role,
       },
     };
+  }
+
+  // Gets user details
+  async getMe(userId) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new UnAuthorizedError("User not found");
+    }
+
+    return user;
+  }
+
+  async refreshAccessToken(token) {
+    try {
+      const decoded = jwt.verify(token, env.JWT_SECRET);
+
+      const user = await userRepository.findById(decoded.id);
+      if (!user || user.isDeleted) {
+        throw new UnAuthorizedError("User not found or suspended");
+      }
+
+      const accessToken = signToken(
+        {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        env.ACCESS_TOKEN_EXPIRY,
+      );
+
+      return {
+        accessToken,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      };
+    } catch (error) {
+      throw new UnAuthorizedError(
+        "Session expired or invlaid refresh token. Please log in again.",
+      );
+    }
   }
 }
 

@@ -43,4 +43,15 @@ router.get(
 // logout route
 router.post("/logout", authenticate, publicAuthController.logout);
 
+router.get(
+  "/getMe",
+  authenticate,
+  publicAuthController.getMe.bind(publicAuthController),
+);
+
+router.get(
+  "/refreshToken",
+  publicAuthController.refreshToken.bind(publicAuthController),
+);
+
 export default router;
