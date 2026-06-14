@@ -12,17 +12,19 @@
 import { StatusCodes } from "http-status-codes";
 
 import asyncHandler from "../../shared/utils/asyncHandler.js";
+import sendResponse from "../../shared/utils/sendResponse.js";
 import squadService from "./squad.service.js";
 
 class SquadController {
   getSquad = asyncHandler(async (req, res) => {
     const squad = await squadService.getSquad(req.params.teamId);
 
-    res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Squad fetched successfully",
-      data: squad,
-    });
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "Squad fetched successfully",
+      squad,
+    );
   });
 
   addPlayerToSquad = asyncHandler(async (req, res) => {
@@ -32,11 +34,12 @@ class SquadController {
       req.user?._id,
     );
 
-    res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Player added to squad successfully",
-      data: squad,
-    });
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "Player added to squad successfully",
+      squad,
+    );
   });
 
   removePlayerFromSquad = asyncHandler(async (req, res) => {
@@ -46,11 +49,12 @@ class SquadController {
       req.user?._id,
     );
 
-    res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Player removed from squad successfully",
-      data: squad,
-    });
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "Player removed from squad successfully",
+      squad,
+    );
   });
 }
 

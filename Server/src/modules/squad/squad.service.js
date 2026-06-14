@@ -12,8 +12,8 @@
 import BadRequest from "../../shared/error/badRequest.error.js";
 import NotFound from "../../shared/error/notFound.error.js";
 
-import teamRepository from "../team/team.repository.js";
-import playerRepository from "../player/player.repository.js";
+import teamRepository from "../../repository/team.repository.js";
+import playerRepository from "../../repository/player.repository.js";
 
 class SquadService {
   async getSquad(teamId) {
