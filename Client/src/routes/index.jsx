@@ -19,6 +19,8 @@ import { ROLES } from "../shared/constants/roles.js";
 import CreateTeam from "../pages/private/CreateTeam.jsx";
 import TeamsList from "../pages/private/TeamLIst.jsx";
 import EditTeam from "../pages/private/EditTeam.jsx";
+import PlayersList from "../pages/private/PlayersList.jsx";
+import CreatePlayer from "../pages/private/CreatePlayer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -87,7 +89,19 @@ const router = createBrowserRouter([
 {
   path: "teams/:id/edit",
   element: <EditTeam />,
-}
+},
+{
+  path: "players",
+  element: <PlayersList />,
+},
+{
+  path: "players/create",
+  element: <CreatePlayer />,
+},
+// {
+//   path: "players/:id/edit",
+//   element: <EditPlayer />,
+// },
     ],
   },
 ]);
