@@ -1,0 +1,40 @@
+{
+  "name": "cricbuzz",
+  "version": "1.0.0",
+  "description": "A production-grade Cricket Management & Live Scoring Platform built using modern web technologies.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"Client/src/**/*.{js,jsx}\" \"Server/src/**/*.js\"",
+    "format:check": "prettier --check \"Client/src/**/*.{js,jsx}\" \"Server/src/**/*.js\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "Client/src/**/*.{js,jsx}": [
+      "prettier --write"
+    ],
+    "Server/src/**/*.js": [
+      "prettier --write"
+    ]
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshit403-pixel/CricBuzz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/harshit403-pixel/CricBuzz/issues"
+  },
+  "homepage": "https://github.com/harshit403-pixel/CricBuzz#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.4"
+  }
+}
