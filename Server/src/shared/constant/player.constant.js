@@ -1,7 +1,9 @@
- const PLAYER_ROLES = {
+const PLAYER_ROLES = {
   BATTER: "BATTER",
   BOWLER: "BOWLER",
   ALL_ROUNDER: "ALL_ROUNDER",
   WICKET_KEEPER: "WICKET_KEEPER",
 };
-export default PLAYER_ROLES
+
+export default PLAYER_ROLES;
+

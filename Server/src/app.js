@@ -2,14 +2,21 @@ import express from "express";
 import morgan from "morgan";
 import { StatusCodes } from "http-status-codes";
 import env from "./config/env.js";
-import seriesRoutes from "./modules/series/series.routes.js";
-import teamRoutes from "./modules/team/team.routes.js";
 import securityMiddleware from "./shared/middleware/security.middleware.js";
 import { errorHandler } from "./shared/middleware/errorHandler.middleware.js";
-import handleGoogleAuth from "./modules/auth/strategies/google.strategy.js";
-import authRouter from "./modules/auth/auth.route.js";
-import userRouter from "./modules/users/user.route.js";
-import playerRoutes from "./modules/player/player.route.js";
+import handleGoogleAuth from "./modules/public/auth/strategies/google.strategy.js";
+import authRouter from "./modules/public/auth/public.auth.route.js";
+
+import publicTeamRoutes from "./modules/public/team/public.team.routes.js";
+import publicPlayerRoutes from "./modules/public/player/public.player.route.js";
+import publicSeriesRoutes from "./modules/public/series/public.series.routes.js";
+import publicUserRoutes from "./modules/public/users/public.user.route.js";
+
+import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
+import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
+import privateSeriesRoutes from "./modules/private/series/private.series.routes.js";
+import sendResponse from "./shared/utils/sendResponse.js";
+import { authenticate } from "./shared/middleware/auth.middleware.js";
 
 const createApp = () => {
   const app = express();
@@ -24,23 +31,21 @@ const createApp = () => {
   handleGoogleAuth(app);
 
   app.get("/health", (_req, res) => {
-    res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Server is healthy",
-    });
+    sendResponse(res, StatusCodes.OK, "Server is healthy");
   });
 
-  // Series module routes
-  // Handles series creation, listing, update, and delete APIs.
-  app.use("/api/series", seriesRoutes);
+  // Public APIs
+  app.use("/api/series", publicSeriesRoutes);
+  app.use("/api/teams", publicTeamRoutes);
+  app.use("/api/players", publicPlayerRoutes);
+  app.use("/api/users", publicUserRoutes);
 
-  // Team module routes
-  // Handles team creation, listing, update, and delete APIs.
-  app.use("/api/teams", teamRoutes);
+  // Private APIs
+  app.use("/api/admin/teams", privateTeamRoutes);
+  app.use("/api/admin/players", authenticate, privatePlayerRoutes);
+  app.use("/api/admin/series", privateSeriesRoutes);
+
   app.use("/api/auth", authRouter);
-  app.use("/api/users", userRouter);
-  app.use("/api/players", playerRoutes);
-
   app.use(errorHandler);
 
   return app;

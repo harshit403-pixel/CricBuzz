@@ -20,7 +20,7 @@ export const authenticate = (req, res, next) => {
   }
 
   if (!token) {
-    throw new UnAuthorizedError("Access denied. No token provided");
+    throw new UnAuthorizedError("NO Access token");
   }
 
   try {
