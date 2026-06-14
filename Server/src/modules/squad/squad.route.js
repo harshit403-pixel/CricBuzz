@@ -22,10 +22,7 @@ const router = Router();
 
 router
   .route("/:teamId/squad")
-  .get(
-    validateRequest(teamIdSchema),
-    squadController.getSquad,
-  )
+  .get(validateRequest(teamIdSchema), squadController.getSquad)
   .post(
     validateRequest(addPlayerToSquadSchema),
     squadController.addPlayerToSquad,

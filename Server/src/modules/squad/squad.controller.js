@@ -19,12 +19,7 @@ class SquadController {
   getSquad = asyncHandler(async (req, res) => {
     const squad = await squadService.getSquad(req.params.teamId);
 
-    sendResponse(
-      res,
-      StatusCodes.OK,
-      "Squad fetched successfully",
-      squad,
-    );
+    sendResponse(res, StatusCodes.OK, "Squad fetched successfully", squad);
   });
 
   addPlayerToSquad = asyncHandler(async (req, res) => {
