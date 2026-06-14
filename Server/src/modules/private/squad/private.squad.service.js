@@ -9,18 +9,18 @@
  * - This service validates team/player existence and prevents duplicates.
  */
 
-import BadRequest from "../../shared/error/badRequest.error.js";
-import NotFound from "../../shared/error/notFound.error.js";
+import BadRequestError from "../../../shared/error/badRequest.error.js";
+import NotFoundError from "../../../shared/error/notFound.error.js";
 
-import teamRepository from "../../repository/team.repository.js";
-import playerRepository from "../../repository/player.repository.js";
+import teamRepository from "../../../repository/team.repository.js";
+import playerRepository from "../../../repository/player.repository.js";
 
-class SquadService {
+class PrivateSquadService {
   async getSquad(teamId) {
     const team = await teamRepository.findByIdWithSquad(teamId);
 
     if (!team) {
-      throw new NotFound("Team not found");
+      throw new NotFoundError("Team not found");
     }
 
     return {
@@ -36,13 +36,13 @@ class SquadService {
     const team = await teamRepository.findById(teamId);
 
     if (!team) {
-      throw new NotFound("Team not found");
+      throw new NotFoundError("Team not found");
     }
 
     const player = await playerRepository.findById(playerId);
 
     if (!player) {
-      throw new NotFound("Player not found");
+      throw new NotFoundError("Player not found");
     }
 
     const isPlayerAlreadyInSquad = team.squadPlayers.some(
@@ -50,7 +50,7 @@ class SquadService {
     );
 
     if (isPlayerAlreadyInSquad) {
-      throw new BadRequest("Player already exists in squad");
+      throw new BadRequestError("Player already exists in squad");
     }
 
     /**
@@ -76,13 +76,13 @@ class SquadService {
     const team = await teamRepository.findById(teamId);
 
     if (!team) {
-      throw new NotFound("Team not found");
+      throw new NotFoundError("Team not found");
     }
 
     const player = await playerRepository.findById(playerId);
 
     if (!player) {
-      throw new NotFound("Player not found");
+      throw new NotFoundError("Player not found");
     }
 
     const isPlayerInSquad = team.squadPlayers.some(
@@ -90,7 +90,7 @@ class SquadService {
     );
 
     if (!isPlayerInSquad) {
-      throw new BadRequest("Player not found in squad");
+      throw new BadRequestError("Player not found in squad");
     }
 
     /**
@@ -113,4 +113,4 @@ class SquadService {
   }
 }
 
-export default new SquadService();
+export default new PrivateSquadService();

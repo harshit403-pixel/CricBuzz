@@ -15,12 +15,8 @@ import publicUserRoutes from "./modules/public/users/public.user.route.js";
 import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
 import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
 import privateSeriesRoutes from "./modules/private/series/private.series.routes.js";
-// <<<<<<< HEAD
-import scoreRoutes from "./modules/private/score/Private.score.route.js";
-// =======
+import privateSquadRoutes from "./modules/private/squad/private.squad.route.js";
 
-import squadRoutes from "./modules/squad/squad.route.js";
-// >>>>>>> 8d54cb05ae8100601d841ab6d6d16519bbaf7a88
 import sendResponse from "./shared/utils/sendResponse.js";
 
 const createApp = () => {
@@ -46,9 +42,9 @@ const createApp = () => {
   app.use("/api/users", publicUserRoutes);
 
   // Squad Management APIs
-  app.use("/api/teams", squadRoutes);
 
   // Private APIs
+  app.use("/api/admin/teams", privateSquadRoutes);
   app.use("/api/admin/teams", privateTeamRoutes);
   app.use("/api/admin/players", privatePlayerRoutes);
   app.use("/api/admin/series", privateSeriesRoutes);

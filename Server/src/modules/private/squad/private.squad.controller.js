@@ -11,19 +11,19 @@
 
 import { StatusCodes } from "http-status-codes";
 
-import asyncHandler from "../../shared/utils/asyncHandler.js";
-import sendResponse from "../../shared/utils/sendResponse.js";
-import squadService from "./squad.service.js";
+import asyncHandler from "../../../shared/utils/asyncHandler.js";
+import sendResponse from "../../../shared/utils/sendResponse.js";
+import privateSquadService from "./private.squad.service.js";
 
-class SquadController {
+class PrivateSquadController {
   getSquad = asyncHandler(async (req, res) => {
-    const squad = await squadService.getSquad(req.params.teamId);
+    const squad = await privateSquadService.getSquad(req.params.teamId);
 
     sendResponse(res, StatusCodes.OK, "Squad fetched successfully", squad);
   });
 
   addPlayerToSquad = asyncHandler(async (req, res) => {
-    const squad = await squadService.addPlayerToSquad(
+    const squad = await privateSquadService.addPlayerToSquad(
       req.params.teamId,
       req.validated.body.playerId,
       req.user?._id,
@@ -38,7 +38,7 @@ class SquadController {
   });
 
   removePlayerFromSquad = asyncHandler(async (req, res) => {
-    const squad = await squadService.removePlayerFromSquad(
+    const squad = await privateSquadService.removePlayerFromSquad(
       req.params.teamId,
       req.params.playerId,
       req.user?._id,
@@ -53,4 +53,4 @@ class SquadController {
   });
 }
 
-export default new SquadController();
+export default new PrivateSquadController();
