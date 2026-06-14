@@ -28,27 +28,23 @@ class TeamRepository {
   }
 
   async findByNameOrShortName(name, shortName) {
-  return Team.findOne({
-    $or: [{ name }, { shortName }],
-  });
-}
+    return Team.findOne({
+      $or: [{ name }, { shortName }],
+    });
+  }
 
-async findDuplicateForUpdate(id, name, shortName) {
-  return Team.findOne({
-    _id: { $ne: id },
-    $or: [{ name }, { shortName }],
-  });
-}
+  async findDuplicateForUpdate(id, name, shortName) {
+    return Team.findOne({
+      _id: { $ne: id },
+      $or: [{ name }, { shortName }],
+    });
+  }
 
   async updateById(id, data) {
-    return Team.findOneAndUpdate(
-      { _id: id, isDeleted: false },
-      data,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    return Team.findOneAndUpdate({ _id: id, isDeleted: false }, data, {
+      new: true,
+      runValidators: true,
+    });
   }
 
   async deleteById(id) {
@@ -60,6 +56,66 @@ async findDuplicateForUpdate(id, name, shortName) {
         runValidators: true,
       },
     );
+  }
+
+  async findByIdWithSquad(id) {
+    return Team.findOne({
+      _id: id,
+      isDeleted: false,
+    }).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
+  }
+
+  async addPlayerToSquad(teamId, playerId, updatedBy) {
+    const update = {
+      $addToSet: { squadPlayers: playerId },
+    };
+
+    if (updatedBy) {
+      update.$set = { updatedBy };
+    }
+
+    return Team.findOneAndUpdate(
+      {
+        _id: teamId,
+        isDeleted: false,
+      },
+      update,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    ).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
+  }
+
+  async removePlayerFromSquad(teamId, playerId, updatedBy) {
+    const update = {
+      $pull: { squadPlayers: playerId },
+    };
+
+    if (updatedBy) {
+      update.$set = { updatedBy };
+    }
+
+    return Team.findOneAndUpdate(
+      {
+        _id: teamId,
+        isDeleted: false,
+      },
+      update,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    ).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
   }
 }
 

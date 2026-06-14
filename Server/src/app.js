@@ -10,6 +10,7 @@ import handleGoogleAuth from "./modules/auth/strategies/google.strategy.js";
 import authRouter from "./modules/auth/auth.route.js";
 import userRouter from "./modules/users/user.route.js";
 import playerRoutes from "./modules/player/player.route.js";
+import squadRoutes from "./modules/squad/squad.route.js";
 
 const createApp = () => {
   const app = express();
@@ -37,6 +38,11 @@ const createApp = () => {
   // Team module routes
   // Handles team creation, listing, update, and delete APIs.
   app.use("/api/teams", teamRoutes);
+
+  // Squad management routes
+  // Handles team squad player listing, adding, and removing APIs.
+  app.use("/api/teams", squadRoutes);
+  
   app.use("/api/auth", authRouter);
   app.use("/api/users", userRouter);
   app.use("/api/players", playerRoutes);
