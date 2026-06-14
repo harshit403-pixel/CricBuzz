@@ -9,9 +9,10 @@ import {
   UserCheck,
 } from "lucide-react";
 import { env } from "../../config/env.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../lib/axiosInstance.js";
 import { useDispatch } from "react-redux";
+import { setUser } from "../../slices/userSlice";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -245,12 +246,12 @@ const Signup = () => {
 
         <p className="mt-8 text-center text-xs text-slate-400">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="font-semibold text-emerald-400 hover:text-emerald-300 hover:underline transition"
           >
             Sign in
-          </a>
+          </Link>
         </p>
       </div>
     </div>

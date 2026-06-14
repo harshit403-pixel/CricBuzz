@@ -24,4 +24,3 @@ router
   .get(validateParamId("id"), publicTeamController.getTeamById);
 
 export default router;
-

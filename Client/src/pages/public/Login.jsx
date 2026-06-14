@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { Mail, Lock, Globe } from "lucide-react";
 import { env } from "../../config/env.js";
 import axiosInstance from "../../lib/axiosInstance.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setUser } from "../../slices/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -150,12 +151,12 @@ const Login = () => {
 
         <p className="mt-8 text-center text-xs text-slate-400">
           New here?{" "}
-          <a
-            href="/signup"
+          <Link
+            to="/register"
             className="font-semibold text-emerald-400 hover:text-emerald-300 hover:underline transition"
           >
             Create an account
-          </a>
+          </Link>
         </p>
       </div>
     </div>

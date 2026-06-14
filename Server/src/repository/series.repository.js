@@ -77,4 +77,3 @@ class SeriesRepository {
 }
 
 export default new SeriesRepository();
-

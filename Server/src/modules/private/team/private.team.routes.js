@@ -16,8 +16,15 @@ import privateTeamController from "./private.team.controller.js";
 import validateRequest from "../../../shared/middleware/validateRequest.middleware.js";
 import { validateParamId } from "../../../shared/middleware/validateObjectId.middleware.js";
 import { createTeamSchema } from "./validators/team.validator.js";
+import {
+  authenticate,
+  authorize,
+} from "../../../shared/middleware/auth.middleware.js";
+import Roles from "../../../shared/constant/role.constant.js";
 
 const router = Router();
+
+router.use(authenticate, authorize(Roles.SUPER_ADMIN, Roles.ADMIN));
 
 router
   .route("/")
@@ -29,4 +36,3 @@ router
   .delete(validateParamId("id"), privateTeamController.deleteTeam);
 
 export default router;
-

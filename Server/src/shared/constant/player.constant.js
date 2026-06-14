@@ -6,4 +6,3 @@ const PLAYER_ROLES = {
 };
 
 export default PLAYER_ROLES;
-

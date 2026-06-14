@@ -16,7 +16,6 @@ import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
 import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
 import privateSeriesRoutes from "./modules/private/series/private.series.routes.js";
 import sendResponse from "./shared/utils/sendResponse.js";
-import { authenticate } from "./shared/middleware/auth.middleware.js";
 
 const createApp = () => {
   const app = express();
@@ -42,7 +41,7 @@ const createApp = () => {
 
   // Private APIs
   app.use("/api/admin/teams", privateTeamRoutes);
-  app.use("/api/admin/players", authenticate, privatePlayerRoutes);
+  app.use("/api/admin/players", privatePlayerRoutes);
   app.use("/api/admin/series", privateSeriesRoutes);
 
   app.use("/api/auth", authRouter);

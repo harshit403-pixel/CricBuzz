@@ -60,4 +60,3 @@ class TeamRepository {
 }
 
 export default new TeamRepository();
-

@@ -72,6 +72,7 @@ class PublicAuthController {
 
   async logout(req, res) {
     res.clearCookie("accessToken", clearCookieOptions());
+    res.clearCookie("refreshToken", clearCookieOptions());
 
     sendResponse(res, StatusCodes.OK, "Logged out successfully");
   }

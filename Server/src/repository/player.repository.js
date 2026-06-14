@@ -55,4 +55,3 @@ class PlayerRepository {
 }
 
 export default new PlayerRepository();
-

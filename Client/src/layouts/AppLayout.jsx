@@ -13,7 +13,7 @@ const AppLayout = () => {
   const { data } = useQuery({
     queryKey: ["getMe"],
     queryFn: getMe,
-    enabled: pathname !== "/login",
+    enabled: !["/login", "/signup", "/register"].includes(pathname),
     retry: false,
   });
 
