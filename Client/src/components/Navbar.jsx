@@ -1,50 +1,51 @@
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
-  const user = useSelector((state) => state.user);
+import { logout as logoutApi } from "../features/auth/api/auth.api";
+import { logout } from "../slices/userSlice";
+
+function Navbar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated, name, role } = useSelector(
+    (state) => state.user,
+  );
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(logout());
+      navigate("/login");
+    }
+  };
+
   return (
-    <nav className="py-5 px-10 w-full flex items-center justify-between bg-neutral-300">
-      <div className="flex gap-10">
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "underline text-red-100" : ""
-          }
-          to={"/"}
-        >
-          Home
-        </NavLink>
+    <nav className="flex items-center justify-between border-b border-slate-800 bg-slate-950 px-6 py-4 text-white">
+      <h1 className="text-xl font-bold text-emerald-400">
+        CricBuzz
+      </h1>
 
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "underline text-red-100" : ""
-          }
-          to={"/login"}
-        >
-          Login
-        </NavLink>
+      {isAuthenticated && (
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <p className="font-medium">{name}</p>
+            <p className="text-xs text-slate-400">{role}</p>
+          </div>
 
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "underline text-red-100" : ""
-          }
-          to={"/admin"}
-        >
-          Admin
-        </NavLink>
-      </div>
-
-      <div className="h-10 w-10 rounded-full overflow-hidden bg-white">
-        <img
-          className="object-fit h-full w-full"
-          src={
-            user.picture ||
-            "https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
-          }
-        />
-      </div>
+          <button
+            onClick={handleLogout}
+            className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </nav>
   );
-};
+}
 
 export default Navbar;
