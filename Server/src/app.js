@@ -15,6 +15,8 @@ import publicUserRoutes from "./modules/public/users/public.user.route.js";
 import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
 import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
 import privateSeriesRoutes from "./modules/private/series/private.series.routes.js";
+
+import squadRoutes from "./modules/squad/squad.route.js";
 import sendResponse from "./shared/utils/sendResponse.js";
 
 const createApp = () => {
@@ -38,6 +40,9 @@ const createApp = () => {
   app.use("/api/teams", publicTeamRoutes);
   app.use("/api/players", publicPlayerRoutes);
   app.use("/api/users", publicUserRoutes);
+
+  // Squad Management APIs
+  app.use("/api/teams", squadRoutes);
 
   // Private APIs
   app.use("/api/admin/teams", privateTeamRoutes);
