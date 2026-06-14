@@ -7,7 +7,7 @@
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "../../../shared/utils/asyncHandler.js";
 import sendResponse from "../../../shared/utils/sendResponse.js";
-import scoreService from "./score.service.js";
+import scoreService from "./Private.score.service.js";
 
 class ScoreController {
   createScore = asyncHandler(async (req, res) => {

@@ -57,6 +57,66 @@ class TeamRepository {
       },
     );
   }
+
+  async findByIdWithSquad(id) {
+    return Team.findOne({
+      _id: id,
+      isDeleted: false,
+    }).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
+  }
+
+  async addPlayerToSquad(teamId, playerId, updatedBy) {
+    const update = {
+      $addToSet: { squadPlayers: playerId },
+    };
+
+    if (updatedBy) {
+      update.$set = { updatedBy };
+    }
+
+    return Team.findOneAndUpdate(
+      {
+        _id: teamId,
+        isDeleted: false,
+      },
+      update,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    ).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
+  }
+
+  async removePlayerFromSquad(teamId, playerId, updatedBy) {
+    const update = {
+      $pull: { squadPlayers: playerId },
+    };
+
+    if (updatedBy) {
+      update.$set = { updatedBy };
+    }
+
+    return Team.findOneAndUpdate(
+      {
+        _id: teamId,
+        isDeleted: false,
+      },
+      update,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    ).populate({
+      path: "squadPlayers",
+      match: { isDeleted: false },
+    });
+  }
 }
 
 export default new TeamRepository();

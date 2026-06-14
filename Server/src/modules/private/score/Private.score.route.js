@@ -12,7 +12,7 @@ import {
 } from "../../../shared/middleware/auth.middleware.js";
 import validateRequest from "../../../shared/middleware/validateRequest.middleware.js";
 import { validateParamId } from "../../../shared/middleware/validateObjectId.middleware.js";
-import scoreController from "./score.controller.js";
+import scoreController from "./Private.score.controller.js";
 import {
   createScoreSchema,
   updateScoreSchema,
