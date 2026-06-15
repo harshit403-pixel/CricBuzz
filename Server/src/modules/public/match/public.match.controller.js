@@ -3,7 +3,7 @@ import sendResponse from "../../../shared/utils/sendResponse.js";
 import publicMatchService from "./public.match.service.js";
 import asyncHandler from "../../../shared/utils/asyncHandler.js";
 
-class PrivateMatchController {
+class PublicMatchController {
   constructor() {
     this.getMatches = asyncHandler(this.getMatches.bind(this));
     this.getMatchById = asyncHandler(this.getMatchById.bind(this));
@@ -22,4 +22,4 @@ class PrivateMatchController {
   }
 }
 
-export default new PrivateMatchController();
+export default new PublicMatchController();
