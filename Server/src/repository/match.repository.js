@@ -2,11 +2,16 @@ import matchModel from "../models/match.model.js";
 
 class MatchRepository {
   async create(data) {
-    return await matchModel.create(data);
+    const match = await matchModel.create(data);
+
+    return this.findById(match._id);
   }
 
   async findAll() {
-    return await matchModel.find({ isDeleted: false }).sort({ createdAT: -1 });
+    return await matchModel
+      .find({ isDeleted: false })
+      .populate("seriesId team1 team2")
+      .sort({ createdAt: -1 });
   }
 
   async findById(id) {
@@ -16,21 +21,34 @@ class MatchRepository {
   }
 
   async updateById(id, data) {
-    return await matchModel.findOneAndUpdate(
-      { _id: id, isDeleted: false },
-      data,
-      { new: true, runValidators: true },
-    );
+    return await matchModel
+      .findOneAndUpdate(
+        {
+          _id: id,
+          isDeleted: false,
+        },
+        data,
+        {
+          new: true,
+          runValidators: true,
+        },
+      )
+      .populate("seriesId team1 team2");
   }
 
   async deleteById(id) {
-    return await matchModel.findByIdAndDelete(
-      id,
+    return await matchModel.findOneAndUpdate(
+      {
+        _id: id,
+        isDeleted: false,
+      },
       {
         isDeleted: true,
-        updateById,
       },
-      { new: true },
+      {
+        new: true,
+        runValidators: true,
+      },
     );
   }
 

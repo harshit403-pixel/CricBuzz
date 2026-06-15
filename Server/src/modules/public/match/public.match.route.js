@@ -14,8 +14,8 @@ router
 router
   .route("/:id")
   .get(
-    validateParamId(":id"),
-    publicMatchController.getMatches.bind(publicMatchController),
+    validateParamId("id"),
+    publicMatchController.getMatchById.bind(publicMatchController),
   );
 
 export default router;
