@@ -49,6 +49,11 @@ class ScoreRepository {
       isDeleted: { $ne: true },
     });
   }
+
+  // fetch score by matchId
+  async findByMatchId(matchId) {
+    return await Score.find({ matchId }).populate("battingTeam");
+  }
 }
 
 export default new ScoreRepository();
