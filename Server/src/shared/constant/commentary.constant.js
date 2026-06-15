@@ -1,0 +1,9 @@
+const COMMENTARY_TYPE = {
+  NORMAL: "NORMAL",
+  FOUR: "FOUR",
+  SIX: "SIX",
+  WICKET: "WICKET",
+  MILESTONE: "MILESTONE",
+};
+
+export default COMMENTARY_TYPE;
