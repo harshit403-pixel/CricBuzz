@@ -19,6 +19,7 @@ import privateSeriesRoutes from "./modules/private/series/private.series.routes.
 import privateSquadRoutes from "./modules/private/squad/private.squad.route.js";
 import privateScoreRoutes from "./modules/private/score/Private.score.route.js";
 import privateMatchRoutes from "./modules/private/match/private.match.route.js";
+import privatePlayingXiRoutes from "./modules/private/playingXi/private.playingXi.route.js";
 
 import sendResponse from "./shared/utils/sendResponse.js";
 
@@ -54,6 +55,7 @@ const createApp = () => {
   app.use("/api/admin/series", privateSeriesRoutes);
   app.use("/api/admin/scores", privateScoreRoutes);
   app.use("/api/admin/matches", privateMatchRoutes);
+  app.use("/api/admin/matches", privatePlayingXiRoutes);
 
   app.use("/api/auth", authRouter);
   app.use(errorHandler);
