@@ -30,6 +30,16 @@ class PublicTeamService {
 
     return team;
   }
+
+  async getTeamSquad(teamId) {
+    const team = await teamRepository.findByIdWithSquad(teamId);
+
+    if (!team) {
+      throw new NotFoundError("Team not found");
+    }
+
+    return team.squadPlayers;
+  }
 }
 
 export default new PublicTeamService();

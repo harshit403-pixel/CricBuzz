@@ -29,6 +29,17 @@ class TeamController {
 
     sendResponse(res, StatusCodes.OK, "Team fetched successfully", team);
   });
+
+  getTeamSquad = asyncHandler(async (req, res) => {
+    const squadPlayers = await publicTeamService.getTeamSquad(req.params.id);
+
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "squad players fetched successfully",
+      squadPlayers,
+    );
+  });
 }
 
 export default new TeamController();
