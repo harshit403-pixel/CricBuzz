@@ -7,8 +7,17 @@ import teamRepository from "../../../repository/team.repository.js";
 import { getIO } from "../../../sockets/socketGateway.js";
 
 class PrivateMatchService {
+  async getMatchById(id) {
+    const match = await matchRepository.findById(id);
+
+    if (!match) {
+      throw new NotFoundError("Match not found");
+    }
+
+    return match;
+  }
   async updateMatch(id, dto, user) {
-    const match = this.getMatchById(id);
+    const match = await this.getMatchById(id);
 
     // Guard: cannot modify COMPLETED match
     if (match.status === MATCH_STATUS.COMPLETED) {
@@ -69,7 +78,7 @@ class PrivateMatchService {
       );
     }
 
-    return await matchRepository.create({ ...dot, createdBy: user?.id });
+    return await matchRepository.create({ ...dto, createdBy: user?.id });
   }
 
   // State Machine -> sequence of the event is very important [UPCOMING → TOSS_COMPLETED → PLAYING_XI_SELECTED → LIVE → COMPLETED]
