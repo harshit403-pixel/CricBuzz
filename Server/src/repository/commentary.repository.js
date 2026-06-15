@@ -14,9 +14,16 @@ class CommentaryRepository {
 
   async findByMatchId(matchId) {
     return await commentaryModel
-      .find({ matchId, isDeleted: false })
-      .sort({ innings: 1, over: 1, ball: 1, createdAt: 1 })
-      .populate("battingTeam player createdBy");
+      .find({
+        matchId,
+        isDeleted: false,
+      })
+      .sort({
+        innings: 1,
+        over: 1,
+        ball: 1,
+        createdAt: 1,
+      });
   }
 
   async findById(id) {

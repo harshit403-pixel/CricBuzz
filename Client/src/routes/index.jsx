@@ -30,6 +30,7 @@ import PlayingXi from "../pages/private/PlayingXi.jsx";
 import MatchToss from "../pages/private/MatchToss.jsx";
 import CompleteMatch from "../pages/private/CompleteMatch.jsx";
 import ScoreManagement from "../pages/private/ScoreManagement.jsx";
+import CommentaryManagement from "../pages/private/CommentaryManagement.jsx";
 
 const router = createBrowserRouter([
   {
@@ -138,6 +139,11 @@ const router = createBrowserRouter([
       {
         path: "matches/:id/scores",
         element: <ScoreManagement />,
+      },
+      {
+        path: "matches/:id/commentary",
+
+        element: <CommentaryManagement />,
       },
     ],
   },

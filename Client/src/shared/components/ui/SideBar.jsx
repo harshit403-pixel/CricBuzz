@@ -12,7 +12,7 @@ function Sidebar() {
       path: ROUTES.SERIES,
     },
     {
-      label: "Teams",  
+      label: "Teams",
       path: ROUTES.TEAMS,
     },
     {
@@ -23,22 +23,12 @@ function Sidebar() {
       label: "Matches",
       path: ROUTES.MATCHES,
     },
-    {
-      label: "Commentary",
-      path: ROUTES.COMMENTARY,
-    },
-    {
-      label: "Scoring",
-      path: ROUTES.SCORING,
-    },
   ];
 
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-900">
       <div className="border-b border-slate-800 p-6">
-        <h1 className="text-xl font-bold text-emerald-400">
-          CricBuzz Admin
-        </h1>
+        <h1 className="text-xl font-bold text-emerald-400">CricBuzz Admin</h1>
       </div>
 
       <nav className="flex flex-col gap-2 p-4">
