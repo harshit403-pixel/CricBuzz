@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createMatch } from "../api/match.api";
+import { deleteMatch } from "../api/match.api";
 
-export const useCreateMatch = () => {
+export const useDeleteMatch = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createMatch,
+    mutationFn: deleteMatch,
 
     onSuccess: () => {
       queryClient.invalidateQueries({

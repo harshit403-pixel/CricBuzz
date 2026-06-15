@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createMatch } from "../api/match.api";
+import { updateScore } from "../api/score.api";
 
-export const useCreateMatch = () => {
+export const useUpdateScore = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createMatch,
+    mutationFn: ({ id, data }) => updateScore(id, data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["matches"],
+        queryKey: ["scores"],
       });
     },
   });

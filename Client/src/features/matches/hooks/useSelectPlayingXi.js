@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateMatch } from "../api/match.api";
+import { selectPlayingXi } from "../api/matchLifecycle.js";
 
-export const useUpdateMatch = () => {
+export const useSelectPlayingXi = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }) => updateMatch(id, data),
+    mutationFn: ({ id, data }) => selectPlayingXi(id, data),
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

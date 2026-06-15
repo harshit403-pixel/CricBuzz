@@ -23,6 +23,13 @@ import PlayersList from "../pages/private/PlayersList.jsx";
 import CreatePlayer from "../pages/private/CreatePlayer.jsx";
 import EditPlayer from "../pages/private/EditPlayer.jsx";
 import ManageTeamSquad from "../pages/private/ManageTeamSqaud.jsx";
+import CreateMatch from "../pages/private/CreateMatch.jsx";
+import MatchesList from "../pages/private/MatchList.jsx";
+import EditMatch from "../pages/private/EditMatch.jsx";
+import PlayingXi from "../pages/private/PlayingXi.jsx";
+import MatchToss from "../pages/private/MatchToss.jsx";
+import CompleteMatch from "../pages/private/CompleteMatch.jsx";
+import ScoreManagement from "../pages/private/ScoreManagement.jsx";
 
 const router = createBrowserRouter([
   {
@@ -103,6 +110,34 @@ const router = createBrowserRouter([
       {
         path: "teams/:id/squad",
         element: <ManageTeamSquad />,
+      },
+      {
+        path: "matches/create",
+        element: <CreateMatch />,
+      },
+      {
+        path: "matches",
+        element: <MatchesList />,
+      },
+      {
+        path: "matches/:id/edit",
+        element: <EditMatch />,
+      },
+      {
+        path: "matches/:id/playing-xi",
+        element: <PlayingXi />,
+      },
+      {
+        path: "matches/:id/toss",
+        element: <MatchToss />,
+      },
+      {
+        path: "matches/:id/complete",
+        element: <CompleteMatch />,
+      },
+      {
+        path: "matches/:id/scores",
+        element: <ScoreManagement />,
       },
     ],
   },
