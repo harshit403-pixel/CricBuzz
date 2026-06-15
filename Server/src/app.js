@@ -16,6 +16,7 @@ import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
 import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
 import privateSeriesRoutes from "./modules/private/series/private.series.routes.js";
 import privateSquadRoutes from "./modules/private/squad/private.squad.route.js";
+import privateScoreRoutes from "./modules/private/score/Private.score.route.js";
 
 import sendResponse from "./shared/utils/sendResponse.js";
 
@@ -26,7 +27,7 @@ const createApp = () => {
     app.use(morgan("dev"));
   }
 
-  securityMiddleware(app); 
+  securityMiddleware(app);
 
   // initializes passport + google strategy
   handleGoogleAuth(app);
@@ -48,7 +49,7 @@ const createApp = () => {
   app.use("/api/admin/teams", privateTeamRoutes);
   app.use("/api/admin/players", privatePlayerRoutes);
   app.use("/api/admin/series", privateSeriesRoutes);
-  app.use("/api/admin/scores", scoreRoutes);
+  app.use("/api/admin/scores", privateScoreRoutes);
 
   app.use("/api/auth", authRouter);
   app.use(errorHandler);
