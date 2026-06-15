@@ -9,7 +9,7 @@ import {
   PLAYER_ROLES,
 } from "../../features/player/schemas/player.schema";
 
-import { usePlayer } from "../../features/player/hooks/usePlayer";
+import { usePlayer } from "../../features/player/hooks/usePlayer.js";
 import { useUpdatePlayer } from "../../features/player/hooks/useUpdatePlayer";
 
 import { getErrorMessage } from "../../shared/utils/getErrorMessage";
@@ -20,8 +20,7 @@ function EditPlayer() {
 
   const { data, isLoading } = usePlayer(id);
 
-  const updatePlayerMutation =
-    useUpdatePlayer();
+  const updatePlayerMutation = useUpdatePlayer();
 
   const {
     register,
@@ -55,15 +54,11 @@ function EditPlayer() {
         data: formData,
       });
 
-      toast.success(
-        "Player updated successfully",
-      );
+      toast.success("Player updated successfully");
 
       navigate("/admin/players");
     } catch (error) {
-      toast.error(
-        getErrorMessage(error),
-      );
+      toast.error(getErrorMessage(error));
     }
   };
 
@@ -73,14 +68,9 @@ function EditPlayer() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="mb-6 text-3xl font-bold">
-        Edit Player
-      </h1>
+      <h1 className="mb-6 text-3xl font-bold">Edit Player</h1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <input
           {...register("name")}
           placeholder="Player Name"
@@ -97,13 +87,8 @@ function EditPlayer() {
           {...register("role")}
           className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3"
         >
-          {Object.values(
-            PLAYER_ROLES,
-          ).map((role) => (
-            <option
-              key={role}
-              value={role}
-            >
+          {Object.values(PLAYER_ROLES).map((role) => (
+            <option key={role} value={role}>
               {role}
             </option>
           ))}

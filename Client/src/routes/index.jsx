@@ -21,6 +21,8 @@ import TeamsList from "../pages/private/TeamLIst.jsx";
 import EditTeam from "../pages/private/EditTeam.jsx";
 import PlayersList from "../pages/private/PlayersList.jsx";
 import CreatePlayer from "../pages/private/CreatePlayer.jsx";
+import EditPlayer from "../pages/private/EditPlayer.jsx";
+import ManageTeamSquad from "../pages/private/ManageTeamSqaud.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,11 +49,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <RoleProtectedRoute
-          allowedRoles={[
-            ROLES.SUPER_ADMIN,
-            ROLES.ADMIN,
-            ROLES.SCORER,
-          ]}
+          allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SCORER]}
         >
           <AdminLayout />
         </RoleProtectedRoute>
@@ -79,29 +77,33 @@ const router = createBrowserRouter([
         element: <EditSeries />,
       },
       {
-  path: "teams",
-  element: <TeamsList/>,
-},
+        path: "teams",
+        element: <TeamsList />,
+      },
       {
-  path: "teams/create",
-  element: <CreateTeam/>,
-},
-{
-  path: "teams/:id/edit",
-  element: <EditTeam />,
-},
-{
-  path: "players",
-  element: <PlayersList />,
-},
-{
-  path: "players/create",
-  element: <CreatePlayer />,
-},
-// {
-//   path: "players/:id/edit",
-//   element: <EditPlayer />,
-// },
+        path: "teams/create",
+        element: <CreateTeam />,
+      },
+      {
+        path: "teams/:id/edit",
+        element: <EditTeam />,
+      },
+      {
+        path: "players",
+        element: <PlayersList />,
+      },
+      {
+        path: "players/create",
+        element: <CreatePlayer />,
+      },
+      {
+        path: "players/:id/edit",
+        element: <EditPlayer />,
+      },
+      {
+        path: "teams/:id/squad",
+        element: <ManageTeamSquad />,
+      },
     ],
   },
 ]);
