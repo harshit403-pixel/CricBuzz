@@ -12,7 +12,7 @@ class PublicMatchController {
   }
 
   async getMatches(req, res) {
-    const matches = await publicMatchService.getMatches();
+    const matches = await publicMatchService.getMatches(req.query.status);
 
     sendResponse(res, StatusCodes.OK, "Matches fetched succussfully", matches);
   }

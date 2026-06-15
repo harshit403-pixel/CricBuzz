@@ -3,8 +3,8 @@ import scoreRepository from "../../../repository/score.repository.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
 
 class PublicMatchService {
-  async getMatches() {
-    return await matchRepository.findAll();
+  async getMatches(status) {
+    return await matchRepository.findAll(status);
   }
 
   async getMatchById(id) {
@@ -19,7 +19,7 @@ class PublicMatchService {
   async getMatchCenter(matchId) {
     const match = await this.getMatchById(matchId);
 
-    const scores = await scoreRepository.findActiveMatchById(matchId);
+    const scores = await scoreRepository.findByMatchId(matchId);
     const liveScore =
       scores.find((s) => s.innings === match.currentInnings) || null;
 

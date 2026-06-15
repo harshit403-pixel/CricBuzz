@@ -22,7 +22,7 @@ class PublicTeamService {
   }
 
   async getTeamById(id) {
-    const team = await teamRepository.findById(id);
+    const team = await teamRepository.findByIdWithSquad(id);
 
     if (!team) {
       throw new NotFoundError("Team not found");

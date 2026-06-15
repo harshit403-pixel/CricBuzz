@@ -1,4 +1,7 @@
 import BadRequestError from "../../../shared/error/badRequest.error.js";
+import Player from "../../../models/player.model.js";
+import Team from "../../../models/team.model.js";
+import Series from "../../../models/series.model.js";
 
 class PublicSeachService {
   async search(query) {
@@ -14,19 +17,15 @@ class PublicSeachService {
     const regex = new RegExp(escaped, "i");
 
     const [players, teams, series] = await Promise.all([
-      players.find({ name: regex, isDeleted: false }).limit(10),
-      teams
-        .find({
-          $or: [{ name: regex }, { shortName: regex }],
-          isDeleted: false,
-        })
-        .limit(10),
-      series
-        .find({
-          $or: [{ name: regex }, { shortName: regex }],
-          isDeleted: false,
-        })
-        .limit(10),
+      Player.find({ name: regex, isDeleted: false }).limit(10),
+      Team.find({
+        $or: [{ name: regex }, { shortName: regex }],
+        isDeleted: false,
+      }).limit(10),
+      Series.find({
+        $or: [{ name: regex }, { shortName: regex }],
+        isDeleted: false,
+      }).limit(10),
     ]);
 
     return { players, teams, series };

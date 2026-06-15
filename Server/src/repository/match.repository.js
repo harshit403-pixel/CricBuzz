@@ -7,9 +7,15 @@ class MatchRepository {
     return this.findById(match._id);
   }
 
-  async findAll() {
+  async findAll(status) {
+    const query = { isDeleted: false };
+
+    if (status) {
+      query.status = status.toUpperCase();
+    }
+
     return await matchModel
-      .find({ isDeleted: false })
+      .find(query)
       .populate("seriesId team1 team2")
       .sort({ createdAt: -1 });
   }

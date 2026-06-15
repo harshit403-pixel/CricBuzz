@@ -27,12 +27,24 @@ class PublicSeriesService {
       throw new NotFoundError("Series not found");
     }
 
-    return series;
+    const [matches, pointsTable] = await Promise.all([
+      this.getSeriesMatches(id),
+      this.getPointsTable(id),
+    ]);
+
+    return {
+      series,
+      matches,
+      pointsTable,
+    };
   }
 
   async getSeriesMatches(seriesId) {
-    // checks if exists
-    await this.getSeriesById(seriesId);
+    const series = await seriesRepository.findById(seriesId);
+
+    if (!series) {
+      throw new NotFoundError("Series not found");
+    }
 
     return await matchRepository.findBySeriesId(seriesId);
   }
@@ -43,7 +55,7 @@ class PublicSeriesService {
 
     // Only completed matches affect the points table
     const completedMatches = matches.filter(
-      (match) => match.status === "COMPLETED",
+      (match) => match.status === MATCH_STATUS.COMPLETED,
     );
 
     const tableMap = {};
