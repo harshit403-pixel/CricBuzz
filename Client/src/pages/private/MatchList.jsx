@@ -167,6 +167,14 @@ function MatchesList() {
                   Scores
                 </Link>
               )}
+              {match.status === "LIVE" && (
+                <Link
+                  to={`/admin/matches/${match._id}/commentary`}
+                  className="rounded bg-orange-500 px-3 py-1 text-sm text-white"
+                >
+                  Commentary
+                </Link>
+              )}
 
               <button
                 onClick={() => setSelectedMatch(match)}
