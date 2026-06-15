@@ -24,7 +24,16 @@ class SeriesRepository {
   async findByNameOrShortNameOrSeason(name, shortName, season) {
     return Series.findOne({
       isDeleted: false,
-      $or: [{ name }, { shortName }, { season }],
+      $or: [
+        {
+          name,
+          season,
+        },
+        {
+          shortName,
+          season,
+        },
+      ],
     });
   }
 
@@ -32,7 +41,16 @@ class SeriesRepository {
     return Series.findOne({
       _id: { $ne: id },
       isDeleted: false,
-      $or: [{ name }, { shortName }, { season }],
+      $or: [
+        {
+          name,
+          season,
+        },
+        {
+          shortName,
+          season,
+        },
+      ],
     });
   }
 
