@@ -13,7 +13,7 @@ initSocket(server);
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(env.PORT, () => {
+    server.listen(env.PORT, () => {
       logger.info({ port: env.PORT }, "Server listening");
     });
   } catch (err) {
