@@ -1,5 +1,8 @@
 import axios from "axios";
+import { toast } from "sonner";
 import { env } from "../config/env";
+
+let isRedirecting = false;
 
 const axiosInstance = axios.create({
   baseURL: env.API_URL,
@@ -24,21 +27,32 @@ axiosInstance.interceptors.response.use(
 
     if (isUnauthorized && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
-        // Request a new access token
         await axios.get(`${env.API_URL}/auth/refreshToken`, {
           withCredentials: true,
         });
 
-        // Retry the original request
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // If refresh token call fails (expired or missing refresh token), redirect to login
-        console.error("Session expired. Please log in again.");
-        window.location.href = "/login";
+        if (!isRedirecting) {
+          isRedirecting = true;
+
+          toast.error("Your session has expired. Please login again.");
+
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        }
+
         return Promise.reject(refreshError);
       }
     }
+
+    if (errStatusCode === 429) {
+      toast.error("Too many requests. Please wait a moment and try again.");
+    }
+
     return Promise.reject(error);
   },
 );

@@ -24,7 +24,7 @@ class PrivateSeriesService {
 
     if (existingSeries) {
       throw new BadRequestError(
-        "Series with this name, short name, or season already exists",
+        "Series with this name or short name already exists for this season",
       );
     }
 
@@ -51,7 +51,7 @@ class PrivateSeriesService {
 
       if (duplicateSeries) {
         throw new BadRequestError(
-          "Series with this name, short name, or season already exists",
+          "Series with this name or short name already exists for this season",
         );
       }
     }

@@ -32,18 +32,29 @@ const seriesSchema = new Schema(
 );
 
 seriesSchema.index(
-  { name: 1 },
-  { unique: true, partialFilterExpression: { isDeleted: false } },
+  {
+    name: 1,
+    season: 1,
+  },
+  {
+    unique: true,
+    partialFilterExpression: {
+      isDeleted: false,
+    },
+  },
 );
 
 seriesSchema.index(
-  { shortName: 1 },
-  { unique: true, partialFilterExpression: { isDeleted: false } },
-);
-
-seriesSchema.index(
-  { season: 1 },
-  { unique: true, partialFilterExpression: { isDeleted: false } },
+  {
+    shortName: 1,
+    season: 1,
+  },
+  {
+    unique: true,
+    partialFilterExpression: {
+      isDeleted: false,
+    },
+  },
 );
 
 const Series = mongoose.model("Series", seriesSchema);
