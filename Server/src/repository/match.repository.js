@@ -60,6 +60,24 @@ class MatchRepository {
 
     return count > 0;
   }
+
+  // Fetch matches filtered by a specific status (LIVE, UPCOMING, COMPLETED)
+  async findByStatus(status, limit = 10) {
+    return await matchModel
+      .find({ status, isDeleted: false })
+      .populate("seriesId team1 team2")
+      .sort({ startTime: -1 })
+      .limit(limit);
+  }
+
+  // Fetch matches filtered by multiple statuses ([LIVE, INNINGS_BREAK])
+  async findByStatuses(statuses, limit = 10) {
+    return await matchModel
+      .find({ status: { $in: statuses }, isDeleted: false })
+      .populate("seriesId team1 team2")
+      .sort({ startTime: -1 })
+      .limit(limit);
+  }
 }
 
 export default new MatchRepository();
