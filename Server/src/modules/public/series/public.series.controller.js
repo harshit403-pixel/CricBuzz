@@ -21,6 +21,32 @@ class PublicSeriesController {
 
     sendResponse(res, StatusCodes.OK, "Series fetched successfully", series);
   });
+
+  getSeriesMatch = asyncHandler(async (req, res) => {
+    const seriesMatches = await publicSeriesService.getSeriesById(
+      req.params.id,
+    );
+
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "series matches fetched successfully",
+      seriesMatches,
+    );
+  });
+
+  getPointsTable = asyncHandler(async (req, res) => {
+    const pointsTable = await publicSeriesService.getSeriesMatches(
+      req.params.id,
+    );
+
+    sendResponse(
+      res,
+      StatusCodes.OK,
+      "Points Table fetched successfully",
+      pointsTable,
+    );
+  });
 }
 
 export default new PublicSeriesController();

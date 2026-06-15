@@ -78,6 +78,13 @@ class MatchRepository {
       .sort({ startTime: -1 })
       .limit(limit);
   }
+
+  // fetch all matches in a series
+  async findBySeriesId(seriesId) {
+    return await matchModel
+      .find({ seriesId, isDeleted: false })
+      .populate("team1 team2 winner");
+  }
 }
 
 export default new MatchRepository();
