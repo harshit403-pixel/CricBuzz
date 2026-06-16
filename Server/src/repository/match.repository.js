@@ -7,9 +7,15 @@ class MatchRepository {
     return this.findById(match._id);
   }
 
-  async findAll() {
+  async findAll(status) {
+    const query = { isDeleted: false };
+
+    if (status) {
+      query.status = status.toUpperCase();
+    }
+
     return await matchModel
-      .find({ isDeleted: false })
+      .find(query)
       .populate("seriesId team1 team2")
       .sort({ createdAt: -1 });
   }
@@ -59,6 +65,31 @@ class MatchRepository {
     });
 
     return count > 0;
+  }
+
+  // Fetch matches filtered by a specific status (LIVE, UPCOMING, COMPLETED)
+  async findByStatus(status, limit = 10) {
+    return await matchModel
+      .find({ status, isDeleted: false })
+      .populate("seriesId team1 team2")
+      .sort({ startTime: -1 })
+      .limit(limit);
+  }
+
+  // Fetch matches filtered by multiple statuses ([LIVE, INNINGS_BREAK])
+  async findByStatuses(statuses, limit = 10) {
+    return await matchModel
+      .find({ status: { $in: statuses }, isDeleted: false })
+      .populate("seriesId team1 team2")
+      .sort({ startTime: -1 })
+      .limit(limit);
+  }
+
+  // fetch all matches in a series
+  async findBySeriesId(seriesId) {
+    return await matchModel
+      .find({ seriesId, isDeleted: false })
+      .populate("team1 team2 winner");
   }
 }
 

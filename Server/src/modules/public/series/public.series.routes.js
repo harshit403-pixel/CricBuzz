@@ -18,4 +18,16 @@ router
   .route("/:id")
   .get(validateParamId("id"), publicSeriesController.getSeriesById);
 
+// get series matches
+router
+  .route("/:id/matches")
+  .get(validateParamId("id"), publicSeriesController.getSeriesMatch);
+
+// get points table of completed match
+router.route(
+  "/:id/points-table",
+  validateParamId("id"),
+  publicSeriesController.getPointsTable,
+);
+
 export default router;

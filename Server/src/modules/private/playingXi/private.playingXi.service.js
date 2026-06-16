@@ -1,4 +1,3 @@
-
 /**
  * Playing XI Service
  *
@@ -15,7 +14,7 @@ import teamRepository from "../../../repository/team.repository.js";
 import MATCH_STATUS from "../../../shared/constant/match.constant.js";
 import BadRequestError from "../../../shared/error/badRequest.error.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
-import { getIO } from "../../../sockets/socketGateway.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 class PrivatePlayingXiService {
   async selectPlayingXi(matchId, dto, user) {
@@ -57,7 +56,7 @@ class PrivatePlayingXiService {
       user?._id || user?.id,
     );
 
-    this.broadcastPlayingXiUpdate(updatedMatch);
+    this.broadcastPlayingXiUpdate(matchId, updatedMatch);
 
     return updatedMatch;
   }
@@ -71,7 +70,9 @@ class PrivatePlayingXiService {
     const uniquePlayerIds = new Set(selectedPlayerIds);
 
     if (uniquePlayerIds.size !== selectedPlayerIds.length) {
-      throw new BadRequestError(`${teamLabel} Playing XI has duplicate players`);
+      throw new BadRequestError(
+        `${teamLabel} Playing XI has duplicate players`,
+      );
     }
 
     const captainCount = playingXi.filter((item) => item.isCaptain).length;
@@ -108,12 +109,8 @@ class PrivatePlayingXiService {
     return value?._id ? value._id.toString() : value.toString();
   }
 
-  broadcastPlayingXiUpdate(matchData) {
-    try {
-      getIO().emit("playingXI.updated", matchData);
-    } catch (error) {
-      console.error("Socket.io emit failed:", error.message);
-    }
+  broadcastPlayingXiUpdate(matchId, matchData) {
+    emitToMatch(matchId, "playingXI.updated", matchData);
   }
 }
 

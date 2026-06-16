@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import env from "../config/env.js";
+import logger from "../config/logger.js";
 
 let io;
 
@@ -12,16 +13,16 @@ export const initSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log(`Client connected: ${socket.id}`);
+    logger.info(`Client connected: ${socket.id}`);
 
     // Client can listen to updates for just one match
     socket.on("join_match", (matchId) => {
       socket.join(matchId);
-      console.log(`Client ${socket.id} joined room: ${matchId}`);
+      logger.info(`Client ${socket.id} joined room: ${matchId}`);
     });
 
     socket.on("disconnect", () => {
-      console.log(`Client disconnected: ${socket.id}`);
+      logger.info(`Client disconnected: ${socket.id}`);
     });
   });
 
@@ -34,4 +35,14 @@ export const getIO = () => {
   }
 
   return io;
+};
+
+export const emitToMatch = (matchId, eventName, payload) => {
+  if (!io) {
+    logger.warn("Socket.io not initialized, skipping emissions");
+    return;
+  }
+
+  // Emit only to ROOM
+  io.to(matchId.toString()).emit(eventName, payload);
 };

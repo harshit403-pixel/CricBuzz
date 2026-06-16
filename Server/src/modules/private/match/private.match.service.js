@@ -4,7 +4,7 @@ import BadRequestError from "../../../shared/error/badRequest.error.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
 import seriesRepository from "../../../repository/series.repository.js";
 import teamRepository from "../../../repository/team.repository.js";
-import { getIO } from "../../../sockets/socketGateway.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 class PrivateMatchService {
   async getMatchById(id) {
@@ -98,7 +98,7 @@ class PrivateMatchService {
       updateById: user?.id,
     });
 
-    this.broadCastMatchUpdates("match.status_updates", updateMatch);
+    emitToMatch(id, "toss.updated", updateMatch);
 
     return updateMatch;
   }
@@ -112,14 +112,14 @@ class PrivateMatchService {
       );
     }
 
-    const updatedMatch = await matchRepository.updateById(id, {
+    const updateMatch = await matchRepository.updateById(id, {
       status: MATCH_STATUS.LIVE,
       updateById: user?.id,
     });
 
-    this.broadCastMatchUpdates("match.status_updated", updatedMatch);
+    emitToMatch(id, "match.started", updateMatch);
 
-    return updatedMatch;
+    return updateMatch;
   }
 
   async completeMatch(id, completeData, user) {
@@ -141,19 +141,9 @@ class PrivateMatchService {
       updateById: user?.id,
     });
 
-    this.broadCastMatchUpdates("match.status_updated", updatedMatch);
+    emitToMatch(id, "match.completed", updatedMatch);
 
     return updatedMatch;
-  }
-
-  // Helper function to emit messages.
-  broadCastMatchUpdates(eventName, matchData) {
-    try {
-      getIO().emit(eventName, matchData);
-    } catch (error) {
-      // Catch socket errors so the HTTP request itself doesn't crash if Socket.io fails
-      console.error("Socket.io emit failed:", error.message);
-    }
   }
 }
 

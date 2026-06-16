@@ -14,7 +14,7 @@ import matchRepository from "../../../repository/match.repository.js";
 import MATCH_STATUS from "../../../shared/constant/match.constant.js";
 import BadRequestError from "../../../shared/error/badRequest.error.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
-import { getIO } from "../../../sockets/socketGateway.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 class PrivateCommentaryService {
   async createCommentary(dto, user) {
@@ -35,7 +35,7 @@ class PrivateCommentaryService {
       createdBy: user?._id || user?.id,
     });
 
-    this.broadcastCommentaryCreated(commentary);
+    this.broadcastCommentaryCreated(commentary.matchId, commentary);
 
     return commentary;
   }
@@ -50,31 +50,20 @@ class PrivateCommentaryService {
       throw new NotFoundError("Commentary not found");
     }
 
-    this.broadcastCommentaryDeleted(commentary);
+    this.broadcastCommentaryDeleted(commentary.matchId, commentary._id);
 
     return commentary;
   }
 
-  broadcastCommentaryCreated(commentary) {
-    try {
-      getIO().emit("commentary.created", {
-        commentary,
-        matchId: commentary.matchId,
-      });
-    } catch (error) {
-      console.error("Socket.io emit failed:", error.message);
-    }
+  broadcastCommentaryCreated(matchId, commentary) {
+    emitToMatch(matchId, "commentary.created", { matchId, commentary });
   }
 
-  broadcastCommentaryDeleted(commentary) {
-    try {
-      getIO().emit("commentary.deleted", {
-        commentaryId: commentary._id,
-        matchId: commentary.matchId,
-      });
-    } catch (error) {
-      console.error("Socket.io emit failed:", error.message);
-    }
+  broadcastCommentaryDeleted(matchId, commentaryId) {
+    emitToMatch(matchId, "commentary.deleted", {
+      matchId,
+      commentaryId: commentaryId,
+    });
   }
 }
 

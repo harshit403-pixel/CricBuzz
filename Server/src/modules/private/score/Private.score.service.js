@@ -11,6 +11,7 @@ import BadRequestError from "../../../shared/error/badRequest.error.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
 import scoreRepository from "../../../repository/score.repository.js";
 import teamRepository from "../../../repository/team.repository.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 class ScoreService {
   async ensureLiveMatch(matchId) {
@@ -53,6 +54,8 @@ class ScoreService {
     const score = await scoreRepository.create(data);
 
     // Future ready: emit score.updated socket event here.
+    emitToMatch(score.matchId, "score.updated", score);
+
     return score;
   }
 
@@ -85,6 +88,7 @@ class ScoreService {
     const score = await scoreRepository.updateById(id, data);
 
     // Future ready: emit score.updated socket event here.
+    emitToMatch(score.matchId, "score.updated", score);
     return score;
   }
 

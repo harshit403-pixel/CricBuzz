@@ -13,14 +13,24 @@ import matchRepository from "../../../repository/match.repository.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
 
 class PublicCommentaryService {
-  async getMatchCommentary(matchId) {
+  async getMatchCommentary(matchId, page = 1, limit = 50) {
     const match = await matchRepository.findById(matchId);
 
     if (!match) {
       throw new NotFoundError("Match not found");
     }
 
-    return await commentaryRepository.findByMatchId(matchId);
+    const { commentaries, total } =
+      await commentaryRepository.findByMatchInPagination(matchId, page, limit);
+
+    return {
+      commentary: commentaries,
+      pagination: {
+        page,
+        limit,
+        total,
+      },
+    };
   }
 }
 

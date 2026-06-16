@@ -23,4 +23,8 @@ router
   .route("/:id")
   .get(validateParamId("id"), publicTeamController.getTeamById);
 
+router
+  .route("/:id/squad")
+  .get(validateParamId("id"), publicTeamController.getTeamSquad);
+
 export default router;

@@ -10,9 +10,10 @@ import authRouter from "./modules/public/auth/public.auth.route.js";
 import publicTeamRoutes from "./modules/public/team/public.team.routes.js";
 import publicPlayerRoutes from "./modules/public/player/public.player.route.js";
 import publicSeriesRoutes from "./modules/public/series/public.series.routes.js";
-import publicUserRoutes from "./modules/public/users/public.user.route.js";
 import publicMatchRoutes from "./modules/public/match/public.match.route.js";
 import publicCommentaryRoutes from "./modules/public/commentary/public.commentary.route.js";
+import publicHomeRoutes from "./modules/public/home/public.home.route.js";
+import publicSearchRoutes from "./modules/public/search/public.search.route.js";
 
 import privateTeamRoutes from "./modules/private/team/private.team.routes.js";
 import privatePlayerRoutes from "./modules/private/player/private.player.route.js";
@@ -22,6 +23,7 @@ import privateScoreRoutes from "./modules/private/score/Private.score.route.js";
 import privateMatchRoutes from "./modules/private/match/private.match.route.js";
 import privatePlayingXiRoutes from "./modules/private/playingXi/private.playingXi.route.js";
 import privateCommentaryRoutes from "./modules/private/commentary/private.commentary.route.js";
+import privateUserRoutes from "./modules/private/users/private.user.route.js";
 
 import sendResponse from "./shared/utils/sendResponse.js";
 
@@ -45,10 +47,10 @@ const createApp = () => {
   app.use("/api/series", publicSeriesRoutes);
   app.use("/api/teams", publicTeamRoutes);
   app.use("/api/players", publicPlayerRoutes);
-  app.use("/api/users", publicUserRoutes);
   app.use("/api/matches", publicMatchRoutes);
   app.use("/api", publicCommentaryRoutes);
-  // Squad Management APIs
+  app.use("/api/home", publicHomeRoutes);
+  app.use("/api/search", publicSearchRoutes);
 
   // Private APIs
   app.use("/api/admin/teams", privateSquadRoutes);
@@ -59,6 +61,7 @@ const createApp = () => {
   app.use("/api/admin/matches", privateMatchRoutes);
   app.use("/api/admin/matches", privatePlayingXiRoutes);
   app.use("/api/admin/commentary", privateCommentaryRoutes);
+  app.use("/api/users", privateUserRoutes);
 
   app.use("/api/auth", authRouter);
   app.use(errorHandler);

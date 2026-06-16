@@ -13,15 +13,20 @@ import publicCommentaryService from "./public.commentary.service.js";
 
 class PublicCommentaryController {
   getMatchCommentary = asyncHandler(async (req, res) => {
-    const commentary = await publicCommentaryService.getMatchCommentary(
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 25;
+
+    const result = await publicCommentaryService.getMatchCommentary(
       req.params.id,
+      page,
+      limit,
     );
 
     sendResponse(
       res,
       StatusCodes.OK,
       "Commentary fetched successfully",
-      commentary,
+      result,
     );
   });
 }

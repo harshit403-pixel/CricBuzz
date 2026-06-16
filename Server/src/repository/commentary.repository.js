@@ -52,6 +52,23 @@ class CommentaryRepository {
       .sort({ createdAt: -1 })
       .limit(limit);
   }
+
+  async findByMatchInPagination(matchId, page = 1, limit = 25) {
+    const filter = { matchId, isDeleted: false };
+    const skip = (page - 1) * limit;
+
+    const [commentaries, total] = await Promise.all([
+      commentaryModel
+        .find(filter)
+        .sort({ over: -1, ball: -1, createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("battingTeam player createdBy"),
+      commentaryModel.countDocuments(filter),
+    ]);
+
+    return { commentaries, total };
+  }
 }
 
 export default new CommentaryRepository();

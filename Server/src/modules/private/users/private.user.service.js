@@ -1,7 +1,7 @@
 import userRepository from "../../../repository/user.repository.js";
 import NotFoundError from "../../../shared/error/notFound.error.js";
 
-class PublicUserService {
+class PrivateUserService {
   async getUsers() {
     return await userRepository.findAll();
   }
@@ -16,4 +16,4 @@ class PublicUserService {
   }
 }
 
-export default new PublicUserService();
+export default new PrivateUserService();
