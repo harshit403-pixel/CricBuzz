@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Sidebar from "../shared/components/ui/Sidebar";
+import Sidebar from "../shared/components/ui/SideBar";
 
 import { logout as logoutApi } from "../features/auth/api/auth.api";
 import { logout } from "../slices/userSlice";
@@ -30,9 +30,7 @@ function AdminLayout() {
       <div className="flex flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-slate-800 bg-slate-900 px-6 py-4">
           <div>
-            <h2 className="text-lg font-semibold">
-              CricBuzz Admin
-            </h2>
+            <h2 className="text-lg font-semibold">CricBuzz Admin</h2>
           </div>
 
           <div className="flex items-center gap-4">
