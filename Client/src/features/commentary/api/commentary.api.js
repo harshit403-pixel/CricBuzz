@@ -1,7 +1,9 @@
 import axiosInstance from "../../../lib/axiosInstance";
 
-export const getMatchCommentary = (matchId) => {
-  return axiosInstance.get(`/matches/${matchId}/commentary`);
+export const getMatchCommentary = (matchId, params = {}) => {
+  return axiosInstance.get(`/matches/${matchId}/commentary`, {
+    params,
+  });
 };
 
 export const createCommentary = (data) => {
