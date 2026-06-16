@@ -6,8 +6,21 @@ class PrivateUserService {
     return await userRepository.findAll();
   }
 
+  async updateRole(id, role) {
+    const user = await userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    return await userRepository.updateById(id, {
+      role,
+    });
+  }
+
   async getUserById(id) {
     const user = await userRepository.findById(id);
+
     if (!user) {
       throw new NotFoundError("User not found");
     }

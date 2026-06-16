@@ -9,6 +9,15 @@ class PrivateUserController {
     this.getUserById = asyncHandler(this.getUserById.bind(this));
   }
 
+  async updateRole(req, res) {
+    const user = await privateUserService.updateRole(
+      req.params.id,
+      req.body.role,
+    );
+
+    sendResponse(res, StatusCodes.OK, "Role updated successfully", user);
+  }
+
   async getUsers(req, res) {
     const data = await privateUserService.getUsers();
 
