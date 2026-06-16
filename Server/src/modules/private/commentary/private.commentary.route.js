@@ -22,7 +22,10 @@ import {
 
 const router = Router();
 
-router.use(authenticate, authorize(Roles.ADMIN, Roles.SUPER_ADMIN));
+router.use(
+  authenticate,
+  authorize(Roles.ADMIN, Roles.SUPER_ADMIN, Roles.SCORER),
+);
 
 router
   .route("/")

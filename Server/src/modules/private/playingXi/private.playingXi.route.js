@@ -18,7 +18,10 @@ import { selectPlayingXiSchema } from "./validators/playingXi.validator.js";
 
 const router = Router();
 
-router.use(authenticate, authorize(Roles.ADMIN, Roles.SUPER_ADMIN));
+router.use(
+  authenticate,
+  authorize(Roles.ADMIN, Roles.SUPER_ADMIN, Roles.SCORER),
+);
 
 router
   .route("/:id/playing-xi")
