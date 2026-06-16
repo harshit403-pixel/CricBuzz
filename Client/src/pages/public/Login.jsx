@@ -1,19 +1,17 @@
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, Globe } from "lucide-react";
+import { Globe, Lock, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 import { env } from "../../config/env";
-import { setUser } from "../../slices/userSlice";
-
-import { loginSchema } from "../../features/auth/index.js";
 import { useLogin } from "../../features/auth/hooks/useLogin";
+import { loginSchema } from "../../features/auth/index.js";
+import { setUser } from "../../slices/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const loginMutation = useLogin();
 
   const {
@@ -33,7 +31,6 @@ const Login = () => {
       const res = await loginMutation.mutateAsync(data);
 
       dispatch(setUser(res.data.data.user));
-
       navigate("/admin");
     } catch (error) {
       console.error(error);
@@ -58,7 +55,6 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Email */}
           <div>
             <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
               Email Address
@@ -72,7 +68,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="you@example.com"
-                className={`w-full rounded-lg border bg-slate-950 py-3 pr-4 pl-10 text-sm text-white placeholder-slate-500 outline-none transition duration-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
+                className={`w-full rounded-lg border bg-slate-950 py-3 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none transition duration-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
                   errors.email ? "border-red-500" : "border-slate-800"
                 }`}
                 {...register("email")}
@@ -86,7 +82,6 @@ const Login = () => {
             )}
           </div>
 
-          {/* Password */}
           <div>
             <div className="mb-2 flex items-center justify-between">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -108,8 +103,8 @@ const Login = () => {
 
               <input
                 type="password"
-                placeholder="••••••••"
-                className={`w-full rounded-lg border bg-slate-950 py-3 pr-4 pl-10 text-sm text-white placeholder-slate-500 outline-none transition duration-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
+                placeholder="Enter your password"
+                className={`w-full rounded-lg border bg-slate-950 py-3 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none transition duration-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
                   errors.password ? "border-red-500" : "border-slate-800"
                 }`}
                 {...register("password")}
@@ -123,7 +118,6 @@ const Login = () => {
             )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loginMutation.isPending}
@@ -133,18 +127,14 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="relative my-6 flex items-center">
-          <div className="flex-grow border-t border-slate-800"></div>
-
+          <div className="flex-grow border-t border-slate-800" />
           <span className="mx-4 text-xs uppercase tracking-wider text-slate-500">
             or
           </span>
-
-          <div className="flex-grow border-t border-slate-800"></div>
+          <div className="flex-grow border-t border-slate-800" />
         </div>
 
-        {/* Google Login */}
         <button
           type="button"
           onClick={handleGoogleLogin}
