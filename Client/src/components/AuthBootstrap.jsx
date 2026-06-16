@@ -9,22 +9,34 @@ import {
   finishAuthLoading,
 } from "../slices/userSlice";
 
+const PUBLIC_AUTH_ROUTES = ["/login", "/register"];
+
 function AuthBootstrap({ children }) {
   const dispatch = useDispatch();
+
+  const isPublicAuthRoute = PUBLIC_AUTH_ROUTES.includes(
+    window.location.pathname,
+  );
 
   const { data, isError } = useQuery({
     queryKey: ["auth", "me"],
     queryFn: getMe,
     retry: false,
+    enabled: !isPublicAuthRoute,
   });
 
   useEffect(() => {
+    if (isPublicAuthRoute) {
+      dispatch(finishAuthLoading());
+      return;
+    }
+
     if (data?.data?.data) {
       dispatch(setUser(data.data.data));
     } else if (isError) {
       dispatch(finishAuthLoading());
     }
-  }, [data, isError, dispatch]);
+  }, [data, isError, isPublicAuthRoute, dispatch]);
 
   return children;
 }

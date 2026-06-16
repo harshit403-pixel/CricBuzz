@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        if (!isRedirecting) {
+        if (!isRedirecting && window.location.pathname !== "/login") {
           isRedirecting = true;
 
           toast.error("Your session has expired. Please login again.");
