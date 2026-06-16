@@ -22,7 +22,7 @@ import RoleProtectedRoute from "./RoleProtectedRoute";
 
 import { ROLES } from "../shared/constants/roles.js";
 import CreateTeam from "../pages/private/CreateTeam.jsx";
-import TeamsList from "../pages/private/TeamLIst.jsx";
+import TeamsList from "../pages/private/TeamList.jsx";
 import EditTeam from "../pages/private/EditTeam.jsx";
 import PlayersList from "../pages/private/PlayersList.jsx";
 import CreatePlayer from "../pages/private/CreatePlayer.jsx";
