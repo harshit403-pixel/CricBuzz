@@ -62,5 +62,5 @@ function Sidebar() {
     </aside>
   );
 }
-
+//improve the naming]
 export default Sidebar;
