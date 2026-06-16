@@ -29,7 +29,7 @@ function CommentaryTimeline({ commentary = [] }) {
 
   return (
     <div className="space-y-4">
-      {commentary.map((item) => (
+      {commentary.commentary.map((item) => (
         <div
           key={item._id}
           className="rounded-xl border border-slate-800 bg-slate-900 p-4"

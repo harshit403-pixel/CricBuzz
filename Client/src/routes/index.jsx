@@ -36,6 +36,7 @@ import MatchToss from "../pages/private/MatchToss.jsx";
 import CompleteMatch from "../pages/private/CompleteMatch.jsx";
 import ScoreManagement from "../pages/private/ScoreManagement.jsx";
 import CommentaryManagement from "../pages/private/CommentaryManagement.jsx";
+import UsersList from "../pages/private/UsersList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -81,9 +82,7 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <ProtectedRoute>
-        <RoleProtectedRoute
-          allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SCORER]}
-        >
+        <RoleProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]}>
           <AdminLayout />
         </RoleProtectedRoute>
       </ProtectedRoute>
@@ -168,6 +167,14 @@ const router = createBrowserRouter([
       {
         path: "matches/:id/commentary",
         element: <CommentaryManagement />,
+      },
+      {
+        path: "users",
+        element: (
+          <RoleProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+            <UsersList />
+          </RoleProtectedRoute>
+        ),
       },
     ],
   },

@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import { ROUTES } from "../../constants/route.js";
 
 function Sidebar() {
+  const { role } = useSelector((state) => state.user);
+
   const links = [
     {
       label: "Dashboard",
@@ -24,6 +28,13 @@ function Sidebar() {
       path: ROUTES.MATCHES,
     },
   ];
+
+  if (role === "SUPER_ADMIN") {
+    links.push({
+      label: "Users",
+      path: "/admin/users",
+    });
+  }
 
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-900">
