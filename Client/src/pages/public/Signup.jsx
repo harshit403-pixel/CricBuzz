@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import {
   User,
   Mail,
@@ -19,10 +19,10 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -33,15 +33,15 @@ const Signup = () => {
     },
   });
 
-  const selectedRole = watch("role");
+  const selectedRole = useWatch({
+    control,
+    name: "role",
+  });
 
   const onSubmit = async (data) => {
     try {
-      console.log("Signup submitted:", data);
       const res = await axiosInstance.post(`/auth/register`, data);
       dispatch(setUser(res.data.data.user));
-      navigate("/");
-      console.log(res.data.data);
       navigate("/admin");
     } catch (error) {
       console.log(error);

@@ -23,8 +23,9 @@ const seed = async () => {
     console.log("Database connected. Dropping database for a clean start...");
 
     // Drop database to get rid of any legacy/incorrect unique indexes
-    await mongoose.connection.db.dropDatabase();
-    console.log("Database dropped successfully.");
+    if (process.env.NODE_ENV !== "production") {
+      await mongoose.connection.db.dropDatabase();
+    }
 
     // Seed Users
     console.log("Seeding users...");

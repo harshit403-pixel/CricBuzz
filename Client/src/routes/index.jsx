@@ -6,6 +6,11 @@ import AdminLayout from "../layouts/AdminLayout";
 import Home from "../pages/public/Home";
 import Login from "../pages/public/Login";
 import Signup from "../pages/public/Signup";
+import MatchCenter from "../pages/public/MatchCenter.jsx";
+import SeriesPage from "../pages/public/Series.jsx";
+import SeriesDetailPage from "../pages/public/SeriesDetail.jsx";
+import TeamsPage from "../pages/public/Teams.jsx";
+import TeamDetailPage from "../pages/public/TeamDetail.jsx";
 
 import AdminHome from "../pages/private/AdminHome";
 import SeriesList from "../pages/private/SeriesList";
@@ -42,14 +47,34 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "login",
-        element: <Login />,
+        path: "matches/:id",
+        element: <MatchCenter />,
       },
       {
-        path: "register",
-        element: <Signup />,
+        path: "series",
+        element: <SeriesPage />,
+      },
+      {
+        path: "series/:id",
+        element: <SeriesDetailPage />,
+      },
+      {
+        path: "teams",
+        element: <TeamsPage />,
+      },
+      {
+        path: "teams/:id",
+        element: <TeamDetailPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Signup />,
   },
 
   {
@@ -142,7 +167,6 @@ const router = createBrowserRouter([
       },
       {
         path: "matches/:id/commentary",
-
         element: <CommentaryManagement />,
       },
     ],
