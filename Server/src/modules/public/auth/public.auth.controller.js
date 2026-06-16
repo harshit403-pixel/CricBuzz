@@ -5,6 +5,7 @@ import { clearCookieOptions, setCookieOptions } from "./utils/cookie.util.js";
 import env from "../../../config/env.js";
 import sendResponse from "../../../shared/utils/sendResponse.js";
 import UnAuthorizedError from "../../../shared/error/unAuthorized.error.js";
+import Roles from "../../../shared/constant/role.constant.js";
 
 class PublicAuthController {
   constructor() {

@@ -12,6 +12,11 @@ const router = Router();
 router.use(authenticate, authorize(Roles.SUPER_ADMIN));
 
 router.get("/", privateUserController.getUsers);
+router.patch(
+  "/:id/role",
+  validateParamId("id"),
+  privateUserController.updateRole,
+);
 router.get("/:id", validateParamId("id"), privateUserController.getUserById);
 
 export default router;

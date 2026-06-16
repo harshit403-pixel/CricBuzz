@@ -6,7 +6,7 @@ import unAuthorizedError from "../../../shared/error/unAuthorized.error.js";
 import env from "../../../config/env.js";
 import UnAuthorizedError from "../../../shared/error/unAuthorized.error.js";
 import jwt from "jsonwebtoken";
-
+import Roles from "../../../shared/constant/role.constant.js";
 class PublicAuthService {
   // user register manually
   async register(dto) {
@@ -17,8 +17,10 @@ class PublicAuthService {
 
     const hashPassword = await bcrypt.hash(dto.password, 10);
     const user = await userRepository.create({
-      ...dto,
+      name: dto.name,
+      email: dto.email,
       password: hashPassword,
+      role: Roles.SCORER,
     });
 
     const accessToken = signToken(

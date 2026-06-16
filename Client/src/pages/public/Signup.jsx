@@ -1,13 +1,5 @@
-import { useForm, useWatch } from "react-hook-form";
-import {
-  User,
-  Mail,
-  Lock,
-  Globe,
-  ShieldAlert,
-  ShieldCheck,
-  UserCheck,
-} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { User, Mail, Lock, Globe } from "lucide-react";
 import { env } from "../../config/env.js";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../lib/axiosInstance.js";
@@ -19,30 +11,24 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   const {
-    control,
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       name: "",
       email: "",
       password: "",
-      role: "SCORER", // Defaults to SCORER
     },
-  });
-
-  const selectedRole = useWatch({
-    control,
-    name: "role",
   });
 
   const onSubmit = async (data) => {
     try {
-      const res = await axiosInstance.post(`/auth/register`, data);
+      const res = await axiosInstance.post("/auth/register", data);
+
       dispatch(setUser(res.data.data.user));
-      navigate("/admin");
+
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -52,49 +38,30 @@ const Signup = () => {
     window.location.href = `${env.API_URL}/auth/google`;
   };
 
-  const roles = [
-    {
-      id: "SCORER",
-      name: "Scorer",
-      desc: "Logs and updates live match data",
-      icon: UserCheck,
-    },
-    {
-      id: "ADMIN",
-      name: "Admin",
-      desc: "Manages matches, teams, and lists",
-      icon: ShieldCheck,
-    },
-    {
-      id: "SUPER_ADMIN",
-      name: "Super Admin",
-      desc: "Full system configurations",
-      icon: ShieldAlert,
-    },
-  ];
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-radial from-slate-900 via-slate-950 to-black px-4 py-12 text-white">
-      <div className="w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900/60 p-8 backdrop-blur-xl shadow-2xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+      <div className="w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900/60 p-8 shadow-2xl backdrop-blur-xl">
+        <div className="mb-8 text-center">
+          <h2 className="bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent">
             Create Account
           </h2>
+
           <p className="mt-2 text-sm text-slate-400">
-            Join the team and start scoring/managing matches
+            Create your account and follow cricket live
           </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Name Field */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
               Full Name
             </label>
+
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                 <User className="h-5 w-5" />
               </span>
+
               <input
                 type="text"
                 placeholder="John Doe"
@@ -110,20 +77,22 @@ const Signup = () => {
                 })}
               />
             </div>
+
             {errors.name && (
               <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
             )}
           </div>
 
-          {/* Email Field */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
               Email Address
             </label>
+
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                 <Mail className="h-5 w-5" />
               </span>
+
               <input
                 type="email"
                 placeholder="you@example.com"
@@ -139,6 +108,7 @@ const Signup = () => {
                 })}
               />
             </div>
+
             {errors.email && (
               <p className="mt-1 text-xs text-red-500">
                 {errors.email.message}
@@ -146,15 +116,16 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Password Field */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
               Password
             </label>
+
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                 <Lock className="h-5 w-5" />
               </span>
+
               <input
                 type="password"
                 placeholder="Minimum 6 characters"
@@ -170,6 +141,7 @@ const Signup = () => {
                 })}
               />
             </div>
+
             {errors.password && (
               <p className="mt-1 text-xs text-red-500">
                 {errors.password.message}
@@ -177,68 +149,27 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Role Field - Premium Cards Selector */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-              Account Role
-            </label>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {roles.map((role) => {
-                const IconComponent = role.icon;
-                const isSelected = selectedRole === role.id;
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => setValue("role", role.id)}
-                    className={`flex flex-col items-center justify-between rounded-xl border p-4 text-center transition duration-200 outline-none cursor-pointer ${
-                      isSelected
-                        ? "border-emerald-500 bg-emerald-500/10 text-white shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-                        : "border-slate-800 bg-slate-950/50 text-slate-400 hover:border-slate-700 hover:bg-slate-950"
-                    }`}
-                  >
-                    <IconComponent
-                      className={`h-6 w-6 mb-2 ${isSelected ? "text-emerald-400" : "text-slate-500"}`}
-                    />
-                    <div>
-                      <span className="block text-sm font-semibold">
-                        {role.name}
-                      </span>
-                      <span className="block text-[10px] mt-1 leading-tight text-slate-500">
-                        {role.desc}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <input type="hidden" {...register("role")} />
-          </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition duration-200 hover:brightness-110 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+            className="w-full cursor-pointer rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition duration-200 hover:brightness-110 active:scale-[0.99] disabled:opacity-50"
           >
             {isSubmitting ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
-        {/* Divider */}
         <div className="relative my-6 flex items-center">
-          <div className="flex-grow border-t border-slate-800"></div>
+          <div className="flex-grow border-t border-slate-800" />
           <span className="mx-4 text-xs uppercase tracking-wider text-slate-500">
             or
           </span>
-          <div className="flex-grow border-t border-slate-800"></div>
+          <div className="flex-grow border-t border-slate-800" />
         </div>
 
-        {/* Google Signup Option */}
         <button
           type="button"
           onClick={handleGoogleSignup}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-950 py-3 text-sm font-medium text-slate-200 transition duration-200 hover:bg-slate-900 active:scale-[0.99] cursor-pointer"
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg border border-slate-800 bg-slate-950 py-3 text-sm font-medium text-slate-200 transition duration-200 hover:bg-slate-900 active:scale-[0.99]"
         >
           <Globe className="h-5 w-5 text-emerald-400" />
           Continue with Google
@@ -248,7 +179,7 @@ const Signup = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-semibold text-emerald-400 hover:text-emerald-300 hover:underline transition"
+            className="font-semibold text-emerald-400 transition hover:text-emerald-300 hover:underline"
           >
             Sign in
           </Link>

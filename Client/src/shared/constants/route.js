@@ -12,4 +12,5 @@ export const ROUTES = {
   MATCHES: "/admin/matches",
   COMMENTARY: "/admin/commentary",
   SCORING: "/admin/scoring",
+  USERS: "/admin/users",
 };

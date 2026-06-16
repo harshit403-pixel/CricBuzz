@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Activity, Clock3, MapPin, Trophy, Users, Waves } from "lucide-react";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { socket } from "../../lib/socket";
 
 import PublicCommentaryTimeline from "../../features/commentary/components/PublicCommentaryTimeline";
 import { useMatchCommentaryFeed } from "../../features/commentary/hooks/useMatchCommentaryFeed";
@@ -46,6 +49,7 @@ function TeamBadge({ team }) {
 
 function MatchCenter() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("commentary");
 
   const { data, isLoading } = useMatchCenter(id);
@@ -88,6 +92,51 @@ function MatchCenter() {
     ? parseOversToBalls(currentInnings.overs)
     : 0;
 
+  useEffect(() => {
+    if (!id) return;
+
+    socket.connect();
+
+    socket.emit("join_match", id);
+
+    const handleScoreUpdate = () => {
+      queryClient.invalidateQueries({
+        queryKey: ["match-scorecard", id],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["match-center", id],
+      });
+    };
+
+    const handleCommentaryUpdate = () => {
+      queryClient.invalidateQueries({
+        queryKey: ["match-commentary", id],
+      });
+    };
+
+    const handleMatchUpdate = () => {
+      queryClient.invalidateQueries({
+        queryKey: ["match-center", id],
+      });
+    };
+
+    socket.on("score.updated", handleScoreUpdate);
+    socket.on("commentary.created", handleCommentaryUpdate);
+    socket.on("match.started", handleMatchUpdate);
+    socket.on("match.completed", handleMatchUpdate);
+    socket.on("playingXI.updated", handleMatchUpdate);
+    socket.on("toss.updated", handleMatchUpdate);
+    return () => {
+      socket.off("score.updated", handleScoreUpdate);
+      socket.off("commentary.created", handleCommentaryUpdate);
+      socket.off("match.started", handleMatchUpdate);
+      socket.off("match.completed", handleMatchUpdate);
+      socket.off("playingXI.updated", handleMatchUpdate);
+      socket.off("toss.updated", handleMatchUpdate);
+      socket.disconnect();
+    };
+  }, [id, queryClient]);
   if (isLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center text-slate-500">

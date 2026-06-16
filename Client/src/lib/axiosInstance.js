@@ -15,17 +15,19 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => response,
+
   async (error) => {
     const originalRequest = error?.config;
-    const errMessage = error.response?.data?.message;
-    const errStatusCode = error.response?.status;
+
+    const errMessage = error?.response?.data?.message;
+    const errStatusCode = error?.response?.status;
 
     const isUnauthorized =
       errStatusCode === 401 &&
       (errMessage === "NO Access token" ||
         errMessage === "Invalid or expired token");
 
-    if (isUnauthorized && !originalRequest._retry) {
+    if (isUnauthorized && !originalRequest?._retry) {
       originalRequest._retry = true;
 
       try {
@@ -35,6 +37,12 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (refreshError) {
+        // IMPORTANT:
+        // Ignore bootstrap auth checks.
+        if (originalRequest?.url?.includes("/auth/getMe")) {
+          return Promise.reject(refreshError);
+        }
+
         if (!isRedirecting) {
           isRedirecting = true;
 
