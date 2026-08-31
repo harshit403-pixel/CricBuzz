@@ -5,7 +5,7 @@ A production-grade Cricket Management & Live Scoring Platform built using modern
 ## Project Overview
 
 Cricbuzz is a full-stack application that provides:
-
+ 
 * Cricket Series Management
 * Team & Squad Management
 * Player Management
